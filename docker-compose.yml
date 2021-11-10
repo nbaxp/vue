@@ -3,8 +3,8 @@ services:
     nginx:
         image: nginx:1.21.0
         ports:
-            - 800:80
-            - 4430:443
+            - 80:80
+            - 443:443
         volumes:
             - ./:/usr/share/nginx/html
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf

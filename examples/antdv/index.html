@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>examples</title>
+</head>
+
+<body>
+    <div id="app">
+        <router-view />
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue-browser-sfc@0.1.2/dist/vue-browser-sfc.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ant-design-vue@3.0.0-alpha.11/dist/antd.min.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "vue": "https://cdn.jsdelivr.net/npm/vue-browser-sfc@0.1.2/dist/vue-esm-browser.min.js",
+                "vue-router": "https://cdn.jsdelivr.net/npm/vue-router@4.0.6/dist/vue-router.esm-browser.js",
+                "element-plus": "https://cdn.jsdelivr.net/npm/element-plus@1.2.0-beta.3/dist/index.full.min.mjs",
+                "element-plus/": "https://cdn.jsdelivr.net/npm/element-plus@1.2.0-beta.3/"
+            }
+        }
+    </script>
+    <script type="module">
+        import { createApp, defineAsyncComponent } from "vue";
+        import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
+        import ElementPlus from "element-plus";
+        import zhCn from 'element-plus/es/locale/lang/zh-cn.mjs';
+
+        const app = createApp({
+            data() {
+                return {};
+            }
+        });
+
+        const router = new createRouter({
+            history: createWebHashHistory(
+                document.querySelector("base")?.getAttribute("href")
+            ),
+            routes: [],
+        });
+
+        app.use(router);
+        VueBrowserSfc.debug = true;
+        VueBrowserSfc.config(app, router, defineAsyncComponent);
+        app.use(ElementPlus);
+        app.mount("#app");
+    </script>
+</body>
+
+</html>

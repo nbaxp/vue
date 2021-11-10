@@ -4,35 +4,32 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>script mode</title>
+    <title>examples</title>
+    <style>
+        body,
+        ul,
+        li,
+        a {
+            margin: 0;
+            padding: 0;
+        }
+        li{
+            background-color: #eee;
+            color: #000;
+        }
+        a{
+            display: inline-block;
+            padding: 1rem;
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="app">
-        <router-view />
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.21/dist/vue.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-router@4.0.12/dist/vue-router.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-browser-sfc@0.1.1/dist/vue-browser-sfc.min.js"></script>
-
-    <script>
-        const app = Vue.createApp({
-            data() {
-                return {};
-            }
-        });
-
-        const router = new VueRouter.createRouter({
-            history: VueRouter.createWebHashHistory(
-                document.querySelector("base")?.getAttribute("href")
-            ),
-            routes: [],
-        });
-
-        app.use(router);
-        VueBrowserSfc.config(app, router);
-        app.mount("#app");
-    </script>
+    <ul>
+        <li><a href="examples/element-plus/">Element Plus</a></li>
+        <li><a href="examples/antdv/">Ant Design Vue</a></li>
+    </ul>
 </body>
 
 </html>
