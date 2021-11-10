@@ -1,4 +1,31 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus@1.2.0-beta.3/dist/index.css" />
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .el-container {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .el-aside {
+        background-color: #000;
+        min-height: 100%;
+    }
+
+    .el-menu {
+        --el-menu-text-color: hsla(0, 0%, 100%, .65);
+        --el-menu-active-color: #fff;
+        --el-menu-background-color: #000;
+        --el-menu-hover-background-color: #000;
+    }
+
+    .el-menu-item.is-active {
+        background-color: #1890ff;
+    }
+</style>
 <template>
     <el-container>
         <el-aside width="200px">
@@ -36,13 +63,8 @@
         methods: {
             init() {
                 fetch('/api/menu.json')
-                    .then(o => {
-                        return o.json();
-                    })
-                    .then(o => {
-                        console.log({o});
-                        this.menus = o;
-                    });
+                    .then(o => o.json())
+                    .then(o => this.menus = o);
             }
         }
     }
