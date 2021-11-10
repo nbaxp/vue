@@ -37,13 +37,11 @@
             init() {
                 fetch('/api/menu.json')
                     .then(o => {
-                        console.log({o});
                         return o.json();
                     })
                     .then(o => {
                         console.log({o});
-                        console.log({o});
-                        console.log({o});
+                        this.menus = o;
                     });
             }
         }
