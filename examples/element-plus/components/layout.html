@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-aside width="200px">
-            <el-menu :default-active="active">
+            <el-menu :default-active="$route.path" router>
                 <menu-item v-model="menus"></menu-item>
             </el-menu>
         </el-aside>
@@ -21,8 +21,7 @@
         props: ["title"],
         data() {
             return {
-                name: "vue examples",
-                active: "0",
+                name: "Element Plus Demo",
                 menus: [],
             };
         },

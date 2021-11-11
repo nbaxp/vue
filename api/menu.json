@@ -1,8 +1,12 @@
 [
     {
-        "key": "0",
+        "key": "/",
         "name": "首页",
         "icon": "home"
+    },
+    {
+        "key": "/about",
+        "name": "关于"
     },
     {
         "key": "components",

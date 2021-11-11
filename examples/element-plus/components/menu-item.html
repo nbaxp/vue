@@ -4,7 +4,7 @@
             v-if="item.type&&item.type==='group'"
         >
         <template #title>
-            <icon v-if="item.icon" :name="item.icon"></icon>
+            <icon :name="item.icon??'far fa-folder'"></icon>
             <span>{{item.name}}</span>
         </template>
             <menu-item v-model="item.children"></menu-item>
@@ -13,11 +13,11 @@
             v-else-if="item.children&&item.children.length"
             :index="item.key"
         >
-            <template #title><icon v-if="item.icon" :name="item.icon"></icon><span>{{item.name}}</span></template>
+            <template #title><icon :name="item.icon??'fas fa-th-large'"></icon><span>{{item.name}}</span></template>
             <menu-item v-model="item.children"></menu-item>
         </el-sub-menu>
         <el-menu-item v-else :index="item.key">
-            <icon v-if="item.icon" :name="item.icon"></icon>
+            <icon :name="item.icon??'far fa-circle'"></icon>
             <span>{{item.name}}</span>
         </el-menu-item>
     </template>
