@@ -1,11 +1,52 @@
 [
     {
         "key": "0",
-        "name": "首页"
+        "name": "首页",
+        "icon": "home"
+    },
+    {
+        "key": "components",
+        "name": "组件",
+        "children": [
+            {
+                "type": "group",
+                "name": "General",
+                "icon":"far fa-folder",
+                "children": [
+                    {
+                        "key": "c-1-1",
+                        "name": "Button 按钮"
+                    },
+                    {
+                        "key": "c-1-2",
+                        "name": "Icon 图标"
+                    }
+                ]
+            },
+            {
+                "type": "group",
+                "name": "Layout",
+                "children": [
+                    {
+                        "key": "c-2-1",
+                        "name": "Grid 栅格"
+                    },
+                    {
+                        "key": "c-2-2",
+                        "name": "Layout 布局"
+                    },
+                    {
+                        "key": "c-2-3",
+                        "name": "Space 间距"
+                    }
+                ]
+            }
+        ]
     },
     {
         "key": "1",
         "name": "仪表盘",
+        "icon":"fas fa-tachometer-alt",
         "children": [
             {
                 "key": "1-1",

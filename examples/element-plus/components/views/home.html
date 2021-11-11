@@ -1,17 +1,21 @@
 <template>
-    <layout :title="title">
-        <h1>Home</h1>
+    <layout>
+        <h1>
+            <ion-icon name="heart"></ion-icon>Home
+        </h1>
+        <router-link to="/">Home</router-link>
+        <router-link to="/about">About</router-link>
     </layout>
 </template>
 <script>
     export default {
         data() {
             return {
-                title: ''
+                title: "",
             };
         },
         mounted() {
-            this.title = '首页';
-        }
-    }
+            this.title = "首页";
+        },
+    };
 </script>

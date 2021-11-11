@@ -1,0 +1,9 @@
+<template>
+    <i v-if="name.startsWith('fa')" :class="'el-icon '+name"></i>
+    <ion-icon v-else class="el-icon" class="el-icon" :name="name"></ion-icon>
+</template>
+<script>
+    export default{
+        props:['name']
+    };
+</script>
