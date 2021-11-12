@@ -1,0 +1,42 @@
+<template>
+    <div class="c-logo">
+        <router-link to="/">
+            <img :src="logo" style="height:32px;">
+            <h1 v-if="!collapse">{{name}}</h1>
+        </router-link>
+    </div>
+</template>
+<script>
+    export default{
+        props:["name","logo","collapse"]
+    };
+</script>
+<style>
+    .c-logo {
+        height: 60px;
+        box-sizing: border-box;
+        padding: 14px 20px;
+    }
+
+    .c-logo a {
+        text-decoration: none;
+        height: 32px;
+        display: flex;
+    }
+
+    .c-logo img {
+        border-style: none;
+        height: 32px;
+    }
+
+    .c-logo h1 {
+        box-sizing: border-box;
+        color: #fff;
+        font-weight: 600;
+        font-size: 18px;
+        height: 32px;
+        line-height: 32px;
+        margin: 0 0 0 12px;
+        padding: 0;
+    }
+</style>

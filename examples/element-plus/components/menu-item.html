@@ -12,11 +12,11 @@
         <el-sub-menu
             v-else-if="item.children&&item.children.length"
         >
-            <template #title><icon :name="item.icon??'fas fa-th-large'"></icon><span>{{item.name}}</span></template>
+            <template #title><icon :name="item.icon??'fas fa-bars'"></icon><span>{{item.name}}</span></template>
             <menu-item v-model="item.children"></menu-item>
         </el-sub-menu>
         <el-menu-item v-else :index="item.path">
-            <icon :name="item.icon??'far fa-circle'"></icon>
+            <icon :name="item.icon??'fas fa-tag'"></icon>
             <span>{{item.name}}</span>
         </el-menu-item>
     </template>

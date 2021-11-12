@@ -5,6 +5,20 @@
         </h1>
         <router-link to="/">Home</router-link>
         <router-link to="/about">About</router-link>
+        <div>
+            <el-dropdown>
+                <span class="el-dropdown-link">
+                    Dropdown List
+                </span>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item>Action 1</el-dropdown-item>
+                        <el-dropdown-item>Action 2</el-dropdown-item>
+                        <el-dropdown-item>Action 3</el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+        </div>
     </layout>
 </template>
 <script>

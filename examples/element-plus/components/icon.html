@@ -4,6 +4,9 @@
 </template>
 <script>
     export default{
-        props:['name']
+        props:['name'],
+        mounted(){
+            VueBrowserSfc&&console.log(`iocon:${this.name}`);
+        }
     };
 </script>

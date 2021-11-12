@@ -1,21 +1,22 @@
 <template>
     <el-container>
-        <el-aside width="200px">
-            <el-affix>
-                
-            </el-affix>
-            <el-menu :default-active="$route.path" router>
+        <el-aside>
+            <logo :name="name" :logo="logo" :collapse="isCollapse"></logo>
+            <el-menu :default-active="$route.path" :collapse="isCollapse" router>
                 <menu-item v-model="menus"></menu-item>
             </el-menu>
         </el-aside>
-        <el-container>
+        <el-container class="main">
             <el-header>
-                <el-affix> 主导航 </el-affix>
+                <div @click="switchAside()"  style="cursor:pointer;display:inline-block;">
+                    <icon :name="isCollapse?'fas fa-indent':'fas fa-outdent'" style="font-size:18px;margin:21px;"></icon>
+                </div>
             </el-header>
             <el-main>
                 <slot></slot>
+                <el-footer><div style="text-align:center;"><p>{{copyright}}</p></div></el-footer>
+                <el-backtop target=".el-main" :visibility-height="100" :bottom="60" :right="20"></el-backtop>
             </el-main>
-            <el-footer>Footer</el-footer>
         </el-container>
     </el-container>
 </template>
@@ -24,7 +25,10 @@
         props: ["title"],
         data() {
             return {
-                name: "Element Plus Demo",
+                name: "Element Plus",
+                logo: '/logo.png',
+                copyright:'Copyright © year Company',
+                isCollapse: false,
                 menus: [],
             };
         },
@@ -38,6 +42,10 @@
                     .then((o) => o.json())
                     .then((o) => (this.menus = o));
             },
+            switchAside() {
+                this.isCollapse = !this.isCollapse;
+                return false;
+            }
         },
     };
 </script>
@@ -48,30 +56,34 @@
         padding: 0;
     }
 
-    .el-container {
-        width: 100vw;
+    .el-container.container {
         height: 100vh;
     }
 
     .el-aside {
+        width: auto;
         background-color: #000c17;
-        min-height: 100%;
     }
 </style>
 <style>
-    .el-menu {
+    .el-aside .el-menu {
         --el-menu-text-color: hsla(0, 0%, 100%, 0.65);
         --el-menu-active-color: #fff;
         --el-menu-background-color: #000c17;
         --el-menu-hover-background-color: #000c17;
-        border-right:none;
+        border-right: none;
     }
 
-    .el-sub-menu {
+    .el-aside .el-sub-menu {
         background-color: #001529;
     }
 
-    .el-menu-item.is-active {
+    .el-aside .el-menu-item.is-active {
         background-color: #1890ff;
+    }
+</style>
+<style>
+    .el-header {
+        padding: 0;
     }
 </style>
