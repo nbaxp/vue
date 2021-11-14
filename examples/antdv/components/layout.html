@@ -1,4 +1,114 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ant-design-vue@3.0.0-alpha.11/dist/antd.css" />
 <template>
-
+    <a-config-provider :locale="locale.current">
+        <a-layout style="height: 100vh;">
+            <a-layout-sider>
+                <logo :name="name" :logo="logo" :collapse="isCollapse"></logo>
+                <el-menu :default-active="$route.path" :collapse="isCollapse" router>
+                    <menu-item v-model="menus"></menu-item>
+                </el-menu>
+            </a-layout-sider>
+            <a-layout class="main">
+                <a-layout-header>
+                    <icon :name="isCollapse?'fas fa-indent':'fas fa-outdent'" @click="switchAside()"
+                        style="font-size:18px;width:60px;height:60px;line-height:60px;cursor:pointer;">
+                    </icon>
+                    <el-dropdown>
+                        <span class="el-dropdown-link">{{locale.current.name}}</span>
+                        <template #dropdown>
+                            <el-dropdown-menu size="medium">
+                                <el-dropdown-item v-for="item in locale.items" @click="changeLocale(item)">{{item.name}}
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                </a-layout-header>
+                <a-layout-content>
+                    <slot></slot>
+                    <a-layout-footer>
+                        <div style="text-align:center;">
+                            <p>{{copyright}}</p>
+                        </div>
+                    </a-layout-footer>
+                    <a-back-top />
+                </a-layout-content>
+            </a-layout>
+        </a-layout>
+    </a-config-provider>
 </template>
+<script>
+    import zhCN from 'ant-design-vue/es/locale/zh_CN.js';
+    import en from 'ant-design-vue/es/locale/en_US.js';
+
+    export default {
+        props: ["title"],
+        data() {
+            return {
+                locale: {
+                    current: zhCN,
+                    items: [zhCN, en]
+                },
+                name: "Element Plus",
+                logo: '/logo.png',
+                copyright: 'Copyright © year Company',
+                isCollapse: false,
+                menus: [],
+            };
+        },
+        mounted() {
+            document.title = this.name + "|" + this.title;
+            this.menus = this.init();
+        },
+        methods: {
+            init() {
+                fetch("/api/menu.json")
+                    .then((o) => o.json())
+                    .then((o) => (this.menus = o));
+            },
+            switchAside() {
+                this.isCollapse = !this.isCollapse;
+                return false;
+            },
+            changeLocale(item) {
+                this.locale.current = item;
+            }
+        },
+    };
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ant-design-vue@3.0.0-alpha.11/dist/antd.dark.min.css" />
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .el-container.container {
+        height: 100vh;
+    }
+
+    .el-aside {
+        width: auto;
+        background-color: #000c17;
+    }
+</style>
+<style>
+    .el-aside .el-menu {
+        --el-menu-text-color: hsla(0, 0%, 100%, 0.65);
+        --el-menu-active-color: #fff;
+        --el-menu-background-color: #000c17;
+        --el-menu-hover-background-color: #000c17;
+        border-right: none;
+    }
+
+    .el-aside .el-sub-menu {
+        background-color: #001529;
+    }
+
+    .el-aside .el-menu-item.is-active {
+        background-color: #1890ff;
+    }
+</style>
+<style>
+    .el-header {
+        padding: 0;
+    }
+</style>

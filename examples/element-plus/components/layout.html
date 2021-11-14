@@ -1,33 +1,55 @@
 <template>
-    <el-container>
-        <el-aside>
-            <logo :name="name" :logo="logo" :collapse="isCollapse"></logo>
-            <el-menu :default-active="$route.path" :collapse="isCollapse" router>
-                <menu-item v-model="menus"></menu-item>
-            </el-menu>
-        </el-aside>
-        <el-container class="main">
-            <el-header>
-                <div @click="switchAside()"  style="cursor:pointer;display:inline-block;">
-                    <icon :name="isCollapse?'fas fa-indent':'fas fa-outdent'" style="font-size:18px;margin:21px;"></icon>
-                </div>
-            </el-header>
-            <el-main>
-                <slot></slot>
-                <el-footer><div style="text-align:center;"><p>{{copyright}}</p></div></el-footer>
-                <el-backtop target=".el-main" :visibility-height="100" :bottom="60" :right="20"></el-backtop>
-            </el-main>
+    <el-config-provider :locale="locale.current">
+        <el-container style="height: 100vh;">
+            <el-aside>
+                <logo :name="name" :logo="logo" :collapse="isCollapse"></logo>
+                <el-menu :default-active="$route.path" :collapse="isCollapse" router>
+                    <menu-item v-model="menus"></menu-item>
+                </el-menu>
+            </el-aside>
+            <el-container class="main">
+                <el-header>
+                    <icon :name="isCollapse?'fas fa-indent':'fas fa-outdent'" @click="switchAside()"
+                        style="font-size:18px;width:60px;height:60px;line-height:60px;cursor:pointer;">
+                    </icon>
+                    <el-dropdown>
+                        <span class="el-dropdown-link">{{locale.current.name}}</span>
+                        <template #dropdown>
+                            <el-dropdown-menu size="medium">
+                                <el-dropdown-item v-for="item in locale.items" @click="changeLocale(item)">{{item.name}}
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                </el-header>
+                <el-main>
+                    <slot></slot>
+                    <el-footer>
+                        <div style="text-align:center;">
+                            <p>{{copyright}}</p>
+                        </div>
+                    </el-footer>
+                    <el-backtop target=".el-main" :visibility-height="100" :bottom="60" :right="20"></el-backtop>
+                </el-main>
+            </el-container>
         </el-container>
-    </el-container>
+    </el-config-provider>
 </template>
 <script>
+    import zhCn from 'element-plus/es/locale/lang/zh-cn.mjs';
+    import en from 'element-plus/es/locale/lang/en.mjs';
+
     export default {
         props: ["title"],
         data() {
             return {
+                locale: {
+                    current: zhCn,
+                    items: [zhCn, en]
+                },
                 name: "Element Plus",
                 logo: '/logo.png',
-                copyright:'Copyright © year Company',
+                copyright: 'Copyright © year Company',
                 isCollapse: false,
                 menus: [],
             };
@@ -45,6 +67,9 @@
             switchAside() {
                 this.isCollapse = !this.isCollapse;
                 return false;
+            },
+            changeLocale(item) {
+                this.locale.current = item;
             }
         },
     };

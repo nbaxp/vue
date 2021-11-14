@@ -29,7 +29,6 @@
         import { createApp, defineAsyncComponent } from "vue";
         import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
         import ElementPlus from "element-plus";
-        import zhCn from 'element-plus/es/locale/lang/zh-cn.mjs';
 
         const app = createApp({
             data() {
@@ -39,7 +38,7 @@
         app.config.compilerOptions.isCustomElement = tag => tag.startsWith('ion-');
 
         const router = new createRouter({
-            history: createWebHashHistory(
+            history: createWebHistory(
                 document.querySelector("base")?.getAttribute("href")
             ),
             routes: [],
