@@ -9,7 +9,7 @@
             </el-aside>
             <el-container class="main">
                 <el-header>
-                    <icon :name="isCollapse?'fas fa-indent':'fas fa-outdent'" @click="switchAside()"
+                    <icon :name="isCollapse?'expand':'fold'" @click="switchAside()"
                         style="font-size:18px;width:60px;height:60px;line-height:60px;cursor:pointer;">
                     </icon>
                     <el-dropdown>
@@ -60,7 +60,7 @@
         },
         methods: {
             init() {
-                fetch("/api/menu.json")
+                fetch("api/menu.json")
                     .then((o) => o.json())
                     .then((o) => (this.menus = o));
             },

@@ -2,7 +2,7 @@
     {
         "path": "/",
         "name": "首页",
-        "icon": "fas fa-home"
+        "icon": "home-filled"
     },
     {
         "path": "/about",
@@ -15,7 +15,6 @@
             {
                 "type": "group",
                 "name": "General",
-                "icon":"far fa-folder",
                 "children": [
                     {
                         "path": "c-1-1",
@@ -50,7 +49,6 @@
     {
         "path": "1",
         "name": "仪表盘",
-        "icon":"fas fa-tachometer-alt",
         "children": [
             {
                 "path": "1-1",

@@ -1,18 +1,19 @@
 <template>
     <a-config-provider :locale="locale.current">
         <a-layout style="height: 100vh;">
-            <a-layout-sider>
+            <a-layout-sider width=250>
                 <logo :name="name" :logo="logo" :collapse="isCollapse"></logo>
-                <el-menu :default-active="$route.path" :collapse="isCollapse" router>
+                <a-menu :selectedKeys="[$route.path]" :inline-collapsed="isCollapse" theme="dark" mode="inline">
                     <menu-item v-model="menus"></menu-item>
-                </el-menu>
+                </a-menu>
             </a-layout-sider>
             <a-layout class="main">
                 <a-layout-header>
-                    <icon :name="isCollapse?'fas fa-indent':'fas fa-outdent'" @click="switchAside()"
-                        style="font-size:18px;width:60px;height:60px;line-height:60px;cursor:pointer;">
-                    </icon>
-                    <el-dropdown>
+                    <a-button type="primary" style="margin-bottom: 16px" @click="switchAside()">
+                        <MenuUnfoldOutlined v-if="isCollapse" />
+                        <MenuFoldOutlined v-else />
+                    </a-button>
+                    <!-- <el-dropdown>
                         <span class="el-dropdown-link">{{locale.current.name}}</span>
                         <template #dropdown>
                             <el-dropdown-menu size="medium">
@@ -20,7 +21,7 @@
                                 </el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
-                    </el-dropdown>
+                    </el-dropdown> -->
                 </a-layout-header>
                 <a-layout-content>
                     <slot></slot>
@@ -36,18 +37,15 @@
     </a-config-provider>
 </template>
 <script>
-    import zhCN from 'ant-design-vue/es/locale/zh_CN.js';
-    import en from 'ant-design-vue/es/locale/en_US.js';
-
     export default {
         props: ["title"],
         data() {
             return {
                 locale: {
-                    current: zhCN,
-                    items: [zhCN, en]
+                    current: antd.locales.zh_CN,
+                    items: [antd.locales.zh_CN, antd.locales.en_US]
                 },
-                name: "Element Plus",
+                name: "Ant Design Vue",
                 logo: '/logo.png',
                 copyright: 'Copyright © year Company',
                 isCollapse: false,
@@ -60,7 +58,7 @@
         },
         methods: {
             init() {
-                fetch("/api/menu.json")
+                fetch("api/menu.json")
                     .then((o) => o.json())
                     .then((o) => (this.menus = o));
             },
@@ -74,7 +72,6 @@
         },
     };
 </script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ant-design-vue@3.0.0-alpha.11/dist/antd.dark.min.css" />
 <style>
     body {
         margin: 0;
@@ -91,6 +88,9 @@
     }
 </style>
 <style>
+    .ant-layout-header{
+        background:#fff;
+    }
     .el-aside .el-menu {
         --el-menu-text-color: hsla(0, 0%, 100%, 0.65);
         --el-menu-active-color: #fff;

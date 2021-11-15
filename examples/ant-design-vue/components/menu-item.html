@@ -1,0 +1,31 @@
+<template>
+    <template v-for="item in modelValue">
+        <a-menu-item-group v-if="item.type&&item.type==='group'" :title="item.name" :key="item.path">
+            <menu-item v-model="item.children"></menu-item>
+        </a-menu-item-group>
+        <a-sub-menu v-else-if="item.children&&item.children.length" :key="item.path">
+            <template #icon>
+                <icon :name = "item.menu??subMenu"></icon>
+            </template>
+            <template #title>{{item.name}}</template>
+            <menu-item v-model="item.children"></menu-item>
+        </a-sub-menu>
+        <a-menu-item v-else :key="item.path">
+            <template #icon>
+                <icon :name = "item.icon??menuItem"></icon>
+            </template >
+            <span>{{item.name}}</span>
+        </a-menu-item>
+    </template>
+</template>
+<script>
+    export default {
+        props: ["modelValue"],
+        data(){
+            return {
+                 subMenu:'fas fa-bars',
+                 menuItem:'far fa-file'
+            }
+        }
+    };
+</script>
