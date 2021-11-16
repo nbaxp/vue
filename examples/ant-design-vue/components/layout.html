@@ -1,27 +1,16 @@
 <template>
     <a-config-provider :locale="locale.current">
         <a-layout style="height: 100vh;">
-            <a-layout-sider width=250>
-                <logo :name="name" :logo="logo" :collapse="isCollapse"></logo>
-                <a-menu :selectedKeys="[$route.path]" :inline-collapsed="isCollapse" theme="dark" mode="inline">
+            <a-layout-sider :collapsed = "collapsed" >
+                <logo :name="name" :logo="logo" :collapsed="collapsed"></logo>
+                <a-menu default-selected-keys="/" mode="inline"theme="dark">
                     <menu-item v-model="menus"></menu-item>
                 </a-menu>
             </a-layout-sider>
             <a-layout class="main">
                 <a-layout-header>
-                    <a-button type="primary" style="margin-bottom: 16px" @click="switchAside()">
-                        <MenuUnfoldOutlined v-if="isCollapse" />
-                        <MenuFoldOutlined v-else />
-                    </a-button>
-                    <!-- <el-dropdown>
-                        <span class="el-dropdown-link">{{locale.current.name}}</span>
-                        <template #dropdown>
-                            <el-dropdown-menu size="medium">
-                                <el-dropdown-item v-for="item in locale.items" @click="changeLocale(item)">{{item.name}}
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </template>
-                    </el-dropdown> -->
+                    <icon :name="collapsed?'fas fa-indent':'fas fa-outdent'" @click="switchAside()"
+                        style="font-size:18px;width:60px;height:60px;line-height:60px;cursor:pointer;"></icon>
                 </a-layout-header>
                 <a-layout-content>
                     <slot></slot>
@@ -48,7 +37,7 @@
                 name: "Ant Design Vue",
                 logo: '/logo.png',
                 copyright: 'Copyright © year Company',
-                isCollapse: false,
+                collapsed: false,
                 menus: [],
             };
         },
@@ -63,7 +52,7 @@
                     .then((o) => (this.menus = o));
             },
             switchAside() {
-                this.isCollapse = !this.isCollapse;
+                this.collapsed = !this.collapsed;
                 return false;
             },
             changeLocale(item) {
@@ -88,9 +77,10 @@
     }
 </style>
 <style>
-    .ant-layout-header{
-        background:#fff;
+    .ant-layout-header {
+        background: #fff;
     }
+
     .el-aside .el-menu {
         --el-menu-text-color: hsla(0, 0%, 100%, 0.65);
         --el-menu-active-color: #fff;

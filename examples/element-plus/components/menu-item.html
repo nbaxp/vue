@@ -4,11 +4,18 @@
             <menu-item v-model="item.children"></menu-item>
         </el-menu-item-group>
         <el-sub-menu v-else-if="item.children&&item.children.length">
-            <template #title><icon :name="item.icon??subMenu"></icon><span>{{item.name}}</span></template>
+            <template #title>
+                <el-icon>
+                    <icon :name="item.icon??subMenu"></icon>
+                </el-icon>
+                <span>{{item.name}}</span>
+            </template>
             <menu-item v-model="item.children"></menu-item>
         </el-sub-menu>
         <el-menu-item v-else :index="item.path">
-            <icon :name="item.icon??menuItem"></icon>
+            <el-icon>
+                <icon :name="item.icon??menuItem"></icon>
+            </el-icon>
             <span>{{item.name}}</span>
         </el-menu-item>
     </template>

@@ -1,5 +1,6 @@
 <template>
-    <el-icon><component :is="name"></component></el-icon>
+    <i v-if="name.startsWith('fa')" class="icon" :class="name"></i>
+    <component v-else :is="name"></component>
 </template>
 <script>
     export default{

@@ -1,0 +1,21 @@
+<template>
+    <el-dropdown style="cursor:pointer;height:60px;">
+        <span class="el-dropdown-link">{{modelValue.current.name}}<el-icon class="el-icon--right"><icon name="arrow-down"></icon></el-icon></span>
+        <template #dropdown>
+            <el-dropdown-menu size="medium">
+                <el-dropdown-item v-for="item in modelValue.items" @click="changeLocale(item)">{{item.name}}
+                </el-dropdown-item>
+            </el-dropdown-menu>
+        </template>
+    </el-dropdown>
+</template>
+<script>
+export default{
+    props:['modelValue'],
+    methods:{
+        changeLocale(item) {
+            this.modelValue.current = item;
+        }
+    }
+}
+</script>

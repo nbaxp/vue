@@ -1,21 +1,21 @@
 <template>
-    <div class="c-logo">
+    <div class="c-logo" :class="{collapsed:collapsed}">
         <router-link to="/">
-            <img :src="logo" style="height:32px;">
-            <h1 v-if="!collapse">{{name}}</h1>
+            <img :src="logo">
+            <h1 v-if="!collapsed">{{name}}</h1>
         </router-link>
     </div>
 </template>
 <script>
     export default{
-        props:["name","logo","collapse"]
+        props:["name","logo","collapsed"]
     };
 </script>
 <style>
     .c-logo {
         height: 60px;
         box-sizing: border-box;
-        padding: 14px 20px;
+        padding: 14px 16px;
     }
 
     .c-logo a {
