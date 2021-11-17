@@ -1,0 +1,94 @@
+<template>
+  <a-config-provider :locale="locale.current">
+    <a-layout class="c-container">
+      <a-layout>
+        <a-layout-sider class="c-aside" collapsible>
+          <a-menu :default-selected-keys="[menu.current]">
+            <c-menu v-model="menu.items"></c-menu>
+          </a-menu>
+        </a-layout-sider>
+        <a-layout>
+          <a-layout-header>
+            <a-space>
+              <a-dropdown trigger="hover">
+                <a-button>Click Me</a-button>
+                <template #content>
+                  <a-doption>Option 1</a-doption>
+                  <a-doption>Option 2</a-doption>
+                  <a-doption>Option 3</a-doption>
+                </template>
+              </a-dropdown>
+              <a-dropdown trigger="hover" @select="changeLocale">
+                <a-button>{{locale.current.locale}}</a-button>
+                <template #content>
+                  <a-doption v-for="item in locale.items">{{item.locale}}</a-doption>
+                </template>
+              </a-dropdown>
+            </a-space>
+          </a-layout-header>
+          <a-layout-content>
+            <slot></slot>
+          </a-layout-content>
+          <a-layout-footer>Footer</a-layout-footer>
+        </a-layout>
+      </a-layout>
+    </a-layout>
+  </a-config-provider>
+</template>
+<script>
+  import zhCN from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/locale/lang/zh-cn.js";
+  import enUS from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/locale/lang/en-us.js";
+
+  export default {
+    data() {
+      return {
+        title: "Arch Design Vue",
+        collapsed: false,
+        locale: {
+          current: zhCN,
+          items: [zhCN, enUS]
+        },
+        menu: {
+          current: '/',
+          items: []
+        }
+      }
+    },
+    mounted() {
+      document.title = this.name + "|" + this.title;
+      this.menu.items = this.init();
+    },
+    methods:
+    {
+      init() {
+        fetch("api/menu.json")
+          .then((o) => o.json())
+          .then((o) => (this.menu.items = o));
+      },
+      onCollapse() {
+        this.collapsed = !this.collapsed;
+      },
+      changeLocale(item) {
+        this.locale.current = item;
+      }
+    }
+  };
+</script>
+<style>
+  body,
+  body>div,
+  .c-container {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+  }
+
+  .arco-layout-sider-trigger {
+    overflow-y: hidden;
+  }
+
+  .arco-layout-header,
+  .arco-layout-footer {
+    height: 60px;
+  }
+</style>

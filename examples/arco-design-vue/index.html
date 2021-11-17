@@ -6,19 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/logo.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0-beta2/css/all.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ant-design-vue@3.0.0-alpha.11/dist/antd.min.css" />
-    <title>Ant Design Vue 3.0</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/dist/arco.min.css" />
+    <title>Arco Design Vue</title>
 </head>
 
 <body>
-    <div id="app">
+    <div id="root">
         <router-view />
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@3.2.21/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-router@4.0.12/dist/vue-router.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-browser-sfc@0.1.9/dist/vue-browser-sfc.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ant-design-vue@3.0.0-alpha.11/dist/antd-with-locales.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/dist/arco-vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/dist/arco-vue-icon.min.js"></script>
     <script>
         const createApp = Vue.createApp;
         const defineAsyncComponent = Vue.defineAsyncComponent;
@@ -41,11 +41,12 @@
         });
         app.use(router);
 
-        app.use(antd);
+        app.use(ArcoVue);
+        app.use(ArcoVueIcon);
 
         VueBrowserSfc.config.debug = true;
         app.use(VueBrowserSfc, defineAsyncComponent);
-        app.mount("#app");
+        app.mount("#root");
     </script>
 </body>
 
