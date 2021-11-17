@@ -7,21 +7,14 @@
             <c-menu v-model="menu.items"></c-menu>
           </a-menu>
         </a-layout-sider>
-        <a-layout>
+        <a-layout class="c-main">
           <a-layout-header>
             <a-space>
+              <c-icon :name="dark?'icon-moon':'icon-sun'" @click="changeTheme"></c-icon>
               <a-dropdown trigger="hover">
-                <a-button>Click Me</a-button>
-                <template #content>
-                  <a-doption>Option 1</a-doption>
-                  <a-doption>Option 2</a-doption>
-                  <a-doption>Option 3</a-doption>
-                </template>
-              </a-dropdown>
-              <a-dropdown trigger="hover" @select="changeLocale">
                 <a-button>{{locale.current.locale}}</a-button>
                 <template #content>
-                  <a-doption v-for="item in locale.items">{{item.locale}}</a-doption>
+                  <a-doption v-for="item in locale.items" @click="changeLocale(item)">{{item.locale}}</a-doption>
                 </template>
               </a-dropdown>
             </a-space>
@@ -30,6 +23,7 @@
             <slot></slot>
           </a-layout-content>
           <a-layout-footer>Footer</a-layout-footer>
+          <a-back-top target-container=".arco-layout-content" :style="{position:'absolute'}" />
         </a-layout>
       </a-layout>
     </a-layout>
@@ -43,6 +37,7 @@
     data() {
       return {
         title: "Arch Design Vue",
+        dark: false,
         collapsed: false,
         locale: {
           current: zhCN,
@@ -70,6 +65,15 @@
       },
       changeLocale(item) {
         this.locale.current = item;
+      },
+      changeTheme() {
+        this.dark = !this.dark;
+        if (this.dark) {
+          document.body.setAttribute('arco-theme', 'dark');
+        }
+        else {
+          document.body.removeAttribute('arco-theme');
+        }
       }
     }
   };
@@ -81,6 +85,11 @@
     margin: 0;
     padding: 0;
     height: 100vh;
+    background-color: var(--color-bg-1);
+  }
+
+  .arco-icon {
+    color: var(--color-text-1);
   }
 
   .arco-layout-sider-trigger {
