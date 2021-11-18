@@ -1,29 +1,36 @@
 <template>
   <a-config-provider :locale="locale.current">
     <a-layout class="c-container">
-      <a-layout>
-        <a-layout-sider class="c-aside" collapsible>
-          <a-menu :default-selected-keys="[menu.current]">
+      <a-layout-header>
+        <a-space>
+          <router-link to="/" class="c-logo" :class="{collapsed:collapsed}">
+            <a-space>
+              <img :src="logo">
+              <h1>{{name}}</h1>
+            </a-space>
+          </router-link>
+        </a-space>
+        <a-space>
+          <c-icon :name="dark?'icon-moon':'icon-sun'" @click="changeTheme"></c-icon>
+          <a-dropdown trigger="hover" @select="changeLocale">
+            <a-button>{{getLocaleName(locale.current.locale)}}</a-button>
+            <template #content>
+              <a-doption v-for="item in locale.items">{{getLocaleName(item.locale)}}</a-doption>
+            </template>
+          </a-dropdown>
+        </a-space>
+      </a-layout-header>
+      <a-layout class="c-body">
+        <a-layout-sider class="c-aside" collapsible :style="{width:'auto'}">
+          <a-menu accordion :default-selected-keys="[menu.current]">
             <c-menu v-model="menu.items"></c-menu>
           </a-menu>
         </a-layout-sider>
-        <a-layout class="c-main">
-          <a-layout-header>
-            <a-space>
-              <c-icon :name="dark?'icon-moon':'icon-sun'" @click="changeTheme"></c-icon>
-              <a-dropdown trigger="hover">
-                <a-button>{{locale.current.locale}}</a-button>
-                <template #content>
-                  <a-doption v-for="item in locale.items" @click="changeLocale(item)">{{item.locale}}</a-doption>
-                </template>
-              </a-dropdown>
-            </a-space>
-          </a-layout-header>
+        <a-layout>
           <a-layout-content>
             <slot></slot>
           </a-layout-content>
           <a-layout-footer>Footer</a-layout-footer>
-          <a-back-top target-container=".arco-layout-content" :style="{position:'absolute'}" />
         </a-layout>
       </a-layout>
     </a-layout>
@@ -36,9 +43,11 @@
   export default {
     data() {
       return {
-        title: "Arch Design Vue",
-        dark: false,
+        name: "Arco Design Vue",
+        logo: '/logo.png',
+        copyright: 'Copyright © year Company',
         collapsed: false,
+        dark: false,
         locale: {
           current: zhCN,
           items: [zhCN, enUS]
@@ -63,8 +72,14 @@
       onCollapse() {
         this.collapsed = !this.collapsed;
       },
-      changeLocale(item) {
-        this.locale.current = item;
+      changeLocale(name) {
+        this.locale.current = this.getLocaleByName(name);
+      },
+      getLocaleName(name) {
+        return name == 'zh-CN' ? '简体中文' : 'English';
+      },
+      getLocaleByName(name){
+        return name==="简体中文"?zhCN:enUS;
       },
       changeTheme() {
         this.dark = !this.dark;
@@ -80,16 +95,52 @@
 </script>
 <style>
   body,
-  body>div,
-  .c-container {
+  body>div {
     margin: 0;
     padding: 0;
     height: 100vh;
+    color: var(--color-text-1);
+    background-color: var(--color-bg-1);
+    overflow: hidden;
+  }
+
+  .c-container {
+    box-sizing: border-box;
+    height: 100vh;
+    padding-top: 60px;
+  }
+
+  .c-body {
+    height: 100%;
+  }
+
+  .arco-layout-header {
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100vw;
+    padding: 0 12px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-border);
+    z-index: 100;
+    overflow: hidden;
     background-color: var(--color-bg-1);
   }
 
-  .arco-icon {
-    color: var(--color-text-1);
+  .arco-layout-sider {
+    position: relative;
+  }
+
+  .arco-layout-sider-children {
+    height: 100%;
+    overflow: auto;
+  }
+
+  .arco-layout-sider-has-trigger {
+    box-sizing: border-box;
+    padding-bottom: 48px;
   }
 
   .arco-layout-sider-trigger {
@@ -99,5 +150,23 @@
   .arco-layout-header,
   .arco-layout-footer {
     height: 60px;
+  }
+</style>
+<style>
+  .c-logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+
+  }
+
+  .c-logo img {
+    height: 32px;
+  }
+
+  .c-logo h1 {
+    line-height: 1.4;
+    font-size: 18px;
+    color: var(--color-text-1);
   }
 </style>
