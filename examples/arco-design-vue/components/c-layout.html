@@ -26,12 +26,15 @@
             <c-menu v-model="menu.items"></c-menu>
           </a-menu>
         </a-layout-sider>
-        <a-layout>
+        <a-layout class="c-r">
           <a-layout-content>
             <slot></slot>
           </a-layout-content>
           <a-layout-footer>Footer</a-layout-footer>
         </a-layout>
+        <a-back-top target-container=".c-r" :style="{position:'absolute'}">
+          <a-button shape="circle"><c-icon name="icon-up"></c-icon></a-button>
+        </a-back-top>
       </a-layout>
     </a-layout>
   </a-config-provider>
