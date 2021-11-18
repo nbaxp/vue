@@ -5,8 +5,19 @@
         "icon": "icon-home"
     },
     {
-        "path": "/about",
-        "name": "关于"
+        "path": "/dashboard",
+        "name": "仪表盘",
+        "icon": "icon-dashboard",
+        "children": [
+            {
+                "path": "/dashboard/workplace",
+                "name": "工作台"
+            },
+            {
+                "path": "/dashboard/monitor",
+                "name": "实时监控"
+            }
+        ]
     },
     {
         "path": "components",

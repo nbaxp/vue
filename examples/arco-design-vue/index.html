@@ -37,7 +37,12 @@
             history: createWebHistory(
                 document.querySelector("base")?.getAttribute("href")
             ),
-            routes: [],
+            routes: [
+                // {
+                //     path: "/:catchAll(.*)",
+                //     redirect: "/404.html"
+                // }
+            ],
         });
         app.use(router);
 
