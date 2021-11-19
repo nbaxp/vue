@@ -4,13 +4,20 @@
     </div>
 </template>
 <script>
+    const ref = Vue.ref;
+    const onMounted = Vue.onMounted;
+    const nextTick = Vue.nextTick;
+    
     export default {
-        props: ["src", "style"],
-        mounted() {
-            var iframe = this.$refs.iframe;
-            this.$nextTick(() => {
-                iframe.src = this.src;
+        props: ["src"],
+        setup(props,context){
+            const iframe = ref(null);
+            nextTick(() => {
+                    iframe.value.src = props.src;
             });
+            return {
+                iframe
+            };
         }
     };
 </script>

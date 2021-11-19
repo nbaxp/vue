@@ -16,22 +16,24 @@
     </c-layout>
 </template>
 <script>
+    const ref = Vue.ref;
+    const onMounted = Vue.onMounted;
+    
     export default {
         setup() {
-            const arcoComponents = Vue.ref([]);
+            const arcoComponents = ref([]);
             const init = () => {
                 fetch("api/home.json")
                     .then((o) => o.json())
                     .then((o) => arcoComponents.value = o);
             };
-            const getSrc = (name, category) => {
-                return `https://arco.design/vue/${category ?? 'component'}/${name}`;
-            };
-            Vue.onMounted(init);
+            onMounted(init);
             return {
                 arcoComponents,
                 init,
-                getSrc
+                getSrc(name, category) {
+                    return `https://arco.design/vue/${category ?? 'component'}/${name}`;
+                }
             }
         }
     };
