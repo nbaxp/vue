@@ -1,0 +1,343 @@
+[
+    {
+        "name": "文档",
+        "children": [
+            {
+                "path": "docs",
+                "key": "start",
+                "name": "快速上手"
+            },
+            {
+                "path": "docs",
+                "key": "dark",
+                "name": "暗黑模式"
+            },
+            {
+                "path": "docs",
+                "key": "theme",
+                "name": "定制主题"
+            },
+            {
+                "path": "docs",
+                "key": "i18n",
+                "name": "国际化"
+            },
+            {
+                "path": "docs",
+                "key": "changelog",
+                "name": "更新日志"
+            }
+        ]
+    },
+    {
+        "name": "通用",
+        "children": [
+            {
+                "key": "button",
+                "name": "按钮"
+            },
+            {
+                "key": "icon",
+                "name": "图标"
+            },
+            {
+                "key": "link",
+                "name": "链接"
+            },
+            {
+                "key": "typography",
+                "name": "排版"
+            }
+        ]
+    },
+    {
+        "name": "布局",
+        "children": [
+            {
+                "key": "divider",
+                "name": "分割线"
+            },
+            {
+                "key": "grid",
+                "name": "栅格"
+            },
+            {
+                "key": "layout",
+                "name": "布局"
+            },
+            {
+                "key": "space",
+                "name": "排间距版"
+            }
+        ]
+    },
+    {
+        "name": "数据展示",
+        "children": [
+            {
+                "key": "avatar",
+                "name": "头像"
+            },
+            {
+                "key": "badge",
+                "name": "徽标"
+            },
+            {
+                "key": "card",
+                "name": "卡片"
+            },
+            {
+                "key": "carousel",
+                "name": "图片轮播"
+            },
+            {
+                "key": "collapse",
+                "name": "折叠面板"
+            },
+            {
+                "key": "comment",
+                "name": "评论"
+            },
+            {
+                "key": "descriptions",
+                "name": "描述列表"
+            },
+            {
+                "key": "empty",
+                "name": "空状态"
+            },
+            {
+                "key": "image",
+                "name": "图片"
+            },
+            {
+                "key": "list",
+                "name": "列表"
+            },
+            {
+                "key": "popover",
+                "name": "气泡卡片"
+            },
+            {
+                "key": "statistic",
+                "name": "数值显示"
+            },
+            {
+                "key": "table",
+                "name": "表格"
+            },
+            {
+                "key": "tabs",
+                "name": "标签页"
+            },
+            {
+                "key": "tag",
+                "name": "标签"
+            },
+            {
+                "key": "timeline",
+                "name": "时间轴"
+            },
+            {
+                "key": "tooltip",
+                "name": "文字气泡"
+            },
+            {
+                "key": "tree",
+                "name": "树"
+            }
+        ]
+    },
+    {
+        "name": "数据输入",
+        "children": [
+            {
+                "key": "auto-complete",
+                "name": "自动补全"
+            },
+            {
+                "key": "cascader",
+                "name": "级联选择"
+            },
+            {
+                "key": "checkbox",
+                "name": "复选框"
+            },
+            {
+                "key": "date-picker",
+                "name": "日期选择器"
+            },
+            {
+                "key": "form",
+                "name": "表单"
+            },
+            {
+                "key": "input",
+                "name": "输入框"
+            },
+            {
+                "key": "input-number",
+                "name": "数字输入框"
+            },
+            {
+                "key": "input-tag",
+                "name": "标签输入框"
+            },
+            {
+                "key": "mention",
+                "name": "提及"
+            },
+            {
+                "key": "radio",
+                "name": "单选框"
+            },
+            {
+                "key": "rate",
+                "name": "评分"
+            },
+            {
+                "key": "select",
+                "name": "选择器"
+            },
+            {
+                "key": "slider",
+                "name": "滑动输入条"
+            },
+            {
+                "key": "switch",
+                "name": "开关"
+            },
+            {
+                "key": "textarea",
+                "name": "文本域"
+            },
+            {
+                "key": "time-picker",
+                "name": "时间选择器"
+            },
+            {
+                "key": "transfer",
+                "name": "数据穿梭框"
+            },
+            {
+                "key": "tree-select",
+                "name": "树选择"
+            },
+            {
+                "key": "upload",
+                "name": "上传"
+            }
+        ]
+    },
+    {
+        "name": "反馈",
+        "children": [
+            {
+                "key": "alert",
+                "name": "警告提示"
+            },
+            {
+                "key": "drawer",
+                "name": "抽屉"
+            },
+            {
+                "key": "message",
+                "name": "全局提示"
+            },
+            {
+                "key": "modal",
+                "name": "对话框"
+            },
+            {
+                "key": "notification",
+                "name": "通知提醒框"
+            },
+            {
+                "key": "popconfirm",
+                "name": "气泡确认框"
+            },
+            {
+                "key": "progress",
+                "name": "进度条"
+            },
+            {
+                "key": "result",
+                "name": "结果页"
+            },
+            {
+                "key": "spin",
+                "name": "加载中"
+            },
+            {
+                "key": "skeleton",
+                "name": "骨架屏"
+            }
+        ]
+    },
+    {
+        "name": "导航",
+        "children": [
+            {
+                "key": "breadcrumb",
+                "name": "面包屑"
+            },
+            {
+                "key": "dropdown",
+                "name": "下拉菜单"
+            },
+            {
+                "key": "menu",
+                "name": "菜单"
+            },
+            {
+                "key": "page-header",
+                "name": "页头"
+            },
+            {
+                "key": "pagination",
+                "name": "分页"
+            },
+            {
+                "key": "steps",
+                "name": "步骤条"
+            }
+        ]
+    },
+    {
+        "name": "其他",
+        "children": [
+            {
+                "key": "affix",
+                "name": "固钉"
+            },
+            {
+                "key": "anchor",
+                "name": "锚点"
+            },
+            {
+                "key": "back-top",
+                "name": "返回顶部"
+            },
+            {
+                "key": "config-provider",
+                "name": "全局配置"
+            },
+            {
+                "key": "resize-box",
+                "name": "伸缩框"
+            },
+            {
+                "key": "tigger",
+                "name": "触发器"
+            },
+            {
+                "key": "split",
+                "name": "面板分割"
+            },
+            {
+                "key": "button",
+                "name": "按钮"
+            }
+        ]
+    }
+]

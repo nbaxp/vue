@@ -3,9 +3,9 @@
     <a-layout class="c-container">
       <a-layout-header>
         <a-space>
-          <router-link to="/" class="c-logo" :class="{collapsed:collapsed}">
+          <router-link to="/" class="c-logo">
             <a-space>
-              <img :src="logo">
+              <img :alt="name" :src="logo">
               <h1>{{name}}</h1>
             </a-space>
           </router-link>
@@ -37,8 +37,8 @@
         </a-space>
       </a-layout-header>
       <a-layout class="c-body">
-        <a-layout-sider class="c-aside" collapsible :style="{width:'auto'}">
-          <a-menu accordion :selected-keys="[menu.current]" @menu-item-click="onMenuItemClick">
+        <a-layout-sider collapsible breakpoint="xl" class="c-aside" :style="{width:'auto'}">
+          <a-menu accordion :selected-keys="[menu.current]" @menu-item-click="onMenuItemClick" :style="{ width: '100%' }">
             <c-menu v-model="menu.items"></c-menu>
           </a-menu>
         </a-layout-sider>
@@ -69,12 +69,11 @@
     data() {
       return {
         name: "Arco Design Vue",
-        logo: '/logo.png',
+        logo: 'logo.svg',
         copyright: [
           `© ${new Date().getFullYear()} Company. All rights reserved`,
           `<a target="blank" href="https://v3.cn.vuejs.org/">Vue 3</a> | <a target="blank" href="https://arco.design/vue/docs/start">Arco Design Vue</a>`
         ],
-        collapsed: false,
         dark: false,
         locale: {
           current: zhCN,
@@ -100,9 +99,6 @@
         fetch("api/menu.json")
           .then((o) => o.json())
           .then((o) => this.menu.items = o);
-      },
-      onCollapse() {
-        this.collapsed = !this.collapsed;
       },
       changeLocale(name) {
         this.locale.current = this.getLocaleByName(name);
@@ -212,7 +208,7 @@
   }
 
   .c-logo img {
-    height: 32px;
+    height: 24px;
   }
 
   .c-logo h1 {
