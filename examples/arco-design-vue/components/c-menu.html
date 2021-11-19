@@ -14,13 +14,15 @@
     </template>
 </template>
 <script>
+    const ref = Vue.ref;
+
     export default {
         props: ['modelValue'],
         setup(){
-            return {
+            return ref({
                  menuIcon:'icon-folder',
                  itemIcon:'icon-file'
-            }
+            });
         }
     };
 </script>
