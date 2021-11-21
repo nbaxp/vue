@@ -35,11 +35,11 @@
         ]
     },
     {
-        "path": "2",
+        "path": "form",
         "name": "表单页",
         "children": [
             {
-                "path": "2-1",
+                "path": "/form/basic",
                 "name": "基础表单"
             },
             {
