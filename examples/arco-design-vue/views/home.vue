@@ -23,7 +23,7 @@
         setup() {
             const arcoComponents = ref([]);
             const init = () => {
-                fetch("api/home.json")
+                fetch("api/arco.json")
                     .then((o) => o.json())
                     .then((o) => arcoComponents.value = o);
             };
