@@ -19,10 +19,12 @@
     export default {
         props: ['modelValue'],
         setup(){
-            return ref({
-                 menuIcon:'icon-folder',
-                 itemIcon:'icon-file'
-            });
+            const menuIcon = ref('icon-folder');
+            const itemIcon=ref('icon-file');
+            return {
+                 menuIcon,
+                 itemIcon
+            };
         }
     };
 </script>
