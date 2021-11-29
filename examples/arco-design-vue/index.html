@@ -50,6 +50,7 @@
         app.use(ArcoVueIcon);
 
         VueBrowserSfc.config.debug = true;
+        VueBrowserSfc.config.componentExt=".vue";
         app.use(VueBrowserSfc, defineAsyncComponent);
         app.mount("#root");
     </script>
