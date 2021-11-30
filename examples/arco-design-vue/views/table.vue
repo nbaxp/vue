@@ -8,26 +8,31 @@
             5.根据schema生成table的列标题，格式化table的单元格数据
             6.根据权限，选择是否生成：详情、编辑和删除
         </p>
-        <c-table v-model="model"></c-table>
+        <c-table v-model="model.form"></c-table>
+        <hr>
+        <p>current:{{model.form.current}}|{{model.form.pageSize}}|{{model.form.total}}</p><button @click="model.form={current:model.form.current+1,total:100,pageSize:30}">测试</button>
     </c-layout>
 </template>
 <script>
-const ref = Vue.ref;
+const reactive  = Vue.reactive;
 const onMounted = Vue.onMounted;
 
 export default {
     setup() {
-        const model = ref({
+        const model = reactive ({
             //paged
             //data
             //schema
-            //form json
+            //form
         });
+        model.form=Qs.parse(location.search?location.search.substr(1):null);
         const init = () => {
-            fetch("api/table.json")
+            var query = Qs.stringify(model.form);
+            var url = `/api/table.json${query?('?'+query):''}`;
+            fetch(url)
                 .then((o) => o.json())
                 .then((o) => {
-                    model.value = o;
+                    model.form = o;
                 });
         };
         const change = (e) => {

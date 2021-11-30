@@ -1,19 +1,28 @@
 <template>
+<div>
+    <h2>分页：:{{modelValue.current}}|{{modelValue.pageSize}}</h2>
     <a-pagination
         show-total
-        hide-on-single-page
         :total="modelValue.total"
         :current="modelValue.current"
-        @change="modelValue.current=$event"
-        @pageSizeChange="modelValue.pageSize=$event"
+        :pageSize="modelValue.pageSize"
+        @change="change"
+        @pageSizeChange="pageSizeChange"
     />
+</div>
 </template>
 <script>
 export default {
     props: ["modelValue"],
     emits:["update:modelValue"],
-    setup(){
+    setup(props){
         return {
+            change(event){
+                props.modelValue.current = event;
+            },
+            pageSizeChange(event){
+                props.modelValue.pageSize = event;
+            }
         }
     }
 };

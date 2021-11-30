@@ -19,18 +19,16 @@
     <script src="https://cdn.jsdelivr.net/npm/vue-browser-sfc@0.2.1/dist/vue-browser-sfc.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/dist/arco-vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/dist/arco-vue-icon.min.js"></script>
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/qs@6.10.1/dist/qs.js"></script>
+    <script type="module" src="mock.js" ></script>
+    <script type="module">
         const createApp = Vue.createApp;
         const defineAsyncComponent = Vue.defineAsyncComponent;
         const createRouter = VueRouter.createRouter;
         const createWebHistory = VueRouter.createWebHistory;
         const createWebHashHistory = VueRouter.createWebHashHistory;
 
-        const app = createApp({
-            setup() {
-                return {};
-            }
-        });
+        const app = createApp({});
         app.config.compilerOptions.isCustomElement = tag => tag.startsWith('ion-');
 
         const router = new createRouter({
@@ -50,7 +48,7 @@
         app.use(ArcoVueIcon);
 
         VueBrowserSfc.config.debug = true;
-        VueBrowserSfc.config.componentExt=".vue";
+        VueBrowserSfc.config.componentExt = ".vue";
         app.use(VueBrowserSfc, defineAsyncComponent);
         app.mount("#root");
     </script>
