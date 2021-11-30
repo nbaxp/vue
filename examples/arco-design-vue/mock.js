@@ -8,10 +8,10 @@ fetchMock.catch(url => {
 
 fetchMock.mock(/.*api\/table.json.*/, url => {
     var search = new URL(`${document.baseURI.replace(document.location.hash, '')}${url}`).search;
-    var query = search ? search.substr(1) : null;
+    var query = search ? search.substring(1) : null;
     var model = Qs.parse(query);
-    model.pageSize = model.pageSize || 20;
-    model.current = model.current || 1;
-    model.total = 100*model.current;
+    model.pageSize = parseInt(model.pageSize || 10);
+    model.current = parseInt(model.current || 1);
+    model.total = 100 * model.current;
     return model;
 });

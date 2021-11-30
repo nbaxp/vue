@@ -5,9 +5,9 @@
         show-total
         :total="modelValue.total"
         :current="modelValue.current"
-        :pageSize="modelValue.pageSize"
+        :page-size="modelValue.pageSize"
         @change="change"
-        @pageSizeChange="pageSizeChange"
+        @page-size-change="pageSizeChange"
     />
 </div>
 </template>
