@@ -8,23 +8,47 @@
             5.根据schema生成table的列标题，格式化table的单元格数据
             6.根据权限，选择是否生成：详情、编辑和删除
         </p>
-        <c-table v-model="model.form"></c-table>
-        <hr>
-        <p>current:{{model.form.current}}|{{model.form.pageSize}}|{{model.form.total}}</p><button @click="model.form={current:model.form.current+1,total:100,pageSize:30}">测试</button>
+        <c-table v-model="model.form" @load="nav"></c-table>
     </c-layout>
 </template>
 <script>
 const reactive  = Vue.reactive;
 const onMounted = Vue.onMounted;
+const useRouter = VueRouter.useRouter;
+const useRoute = VueRouter.useRoute;
 
 export default {
     setup() {
+        const router = useRouter();
+        const route = useRoute();
         const model = reactive ({
             //paged
             //data
             //schema
             //form
         });
+        model.schema={
+            "title":"列表项",
+            "type":"object",
+            "properties":{
+                "count":{
+                    "title":"总数",
+                    "type":"integer"
+                },
+                "pageSize":{
+                    "title":"页码",
+                    "type":"integer"
+                },
+                "pageIndex":{
+                    "title":"当前页",
+                    "type":"integer"
+                },
+                "name":{
+                    "title":"string类型",
+                    "type":"string"
+                }
+            }
+        };
         model.form=Qs.parse(location.search?location.search.substr(1):null);
         const init = () => {
             var query = Qs.stringify(model.form);
@@ -44,6 +68,21 @@ export default {
             model,
             init,
             change,
+            nav(){
+                let params  = new URLSearchParams(Qs.stringify(model.form));
+                params.delete('total');
+                if(params.get('pageIndex')==1)
+                {
+                    params.delete('pageIndex');
+                }
+                if(params.get('pageSize')==10)
+                {
+                    params.delete('pageSize');
+                }
+                var query = params.toString();
+                var path = route.path+(query?('?'+query):'');
+                router.push(path);
+            }
         };
     },
 };

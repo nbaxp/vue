@@ -1,0 +1,11 @@
+*.suo
+*.user
+.vs/
+.vscode/
+[Bb]in/
+[Oo]bj/
+*.nupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets

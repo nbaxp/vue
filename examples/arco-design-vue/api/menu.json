@@ -25,7 +25,7 @@
         "icon":"icon-list",
         "children": [
             {
-                "path": "table",
+                "path": "/table",
                 "name": "查询表格"
             },
             {

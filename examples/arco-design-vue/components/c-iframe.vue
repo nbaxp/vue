@@ -6,13 +6,12 @@
 <script>
     const ref = Vue.ref;
     const onMounted = Vue.onMounted;
-    const nextTick = Vue.nextTick;
 
     export default {
         props: ["src"],
-        setup(props,context){
+        setup(props){
             const iframe = ref(null);
-            nextTick(() =>iframe.value.src = props.src);
+            onMounted(() =>iframe.value.src = props.src);
             return {
                 iframe
             };

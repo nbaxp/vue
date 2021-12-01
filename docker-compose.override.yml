@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  aspnet:
+    image: webapi/aspnet:latest
+    build:
+      context: webapi/DotNet6WebApi/
+      #dockerfile: webapi/DotNet6WebApi/Dockerfile

@@ -1,10 +1,10 @@
 <template>
 <div>
-    <h2>分页：:{{modelValue.current}}|{{modelValue.pageSize}}</h2>
     <a-pagination
         show-total
+        show-page-size
         :total="modelValue.total"
-        :current="modelValue.current"
+        :current="modelValue.pageIndex"
         :page-size="modelValue.pageSize"
         @change="change"
         @page-size-change="pageSizeChange"
@@ -14,14 +14,17 @@
 <script>
 export default {
     props: ["modelValue"],
-    emits:["update:modelValue"],
-    setup(props){
+    emits:["update:modelValue","load"],
+    setup(props,context){
         return {
             change(event){
-                props.modelValue.current = event;
+                props.modelValue.pageIndex = event;
+                context.emit('load');
             },
             pageSizeChange(event){
+                props.modelValue.pageIndex = 1;
                 props.modelValue.pageSize = event;
+                context.emit('load');
             }
         }
     }
