@@ -43,15 +43,18 @@
     <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js"></script>
-    <script
-        src="https://cdn.jsdelivr.net/npm/@rokt33r/js-sequence-diagrams@2.0.6-2/dist/sequence-diagram-min.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@rokt33r/js-sequence-diagrams@2.0.6-2/dist/sequence-diagram-min.min.js">
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid@8.10.2/dist/mermaid.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/raphael@2.3.0/raphael.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/flowchart/1.15.0/flowchart.min.js"></script>
     <script>
         MathJax = {
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']]
+                inlineMath: [
+                    ['$', '$'],
+                    ['\\(', '\\)']
+                ]
             }
         };
     </script>
@@ -74,8 +77,7 @@
             $('.language-flow').each(function () {
                 flowchart.parse($(this).text())
                     .drawSVG($(this).empty()[0], {
-                        'font-family':
-                            'Operator Mono A, Operator Mono B, Fira Code, Menlo, Monaco, monospace',
+                        'font-family': 'Operator Mono A, Operator Mono B, Fira Code, Menlo, Monaco, monospace',
                         'line-length': 40,
                     });
             });
@@ -113,7 +115,10 @@
                 ]
             },
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']]
+                inlineMath: [
+                    ['$', '$'],
+                    ['\\(', '\\)']
+                ]
             }
         };
 
@@ -138,8 +143,7 @@
         //onload
         if (window.location.hash === '') {
             window.location.hash = "README.md"
-        }
-        else {
+        } else {
             window.onhashchange();
         }
     </script>

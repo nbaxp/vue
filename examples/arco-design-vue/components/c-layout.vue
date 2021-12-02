@@ -11,19 +11,18 @@
                     </router-link>
                 </a-space>
                 <a-space>
+                        <a-select :default-value="webapi.current">
+                            <a-option v-for="item in webapi.items" :key="item">{{item}}</a-option>
+                        </a-select>
                     <a-button shape="circle" @click="changeTheme">
                         <c-icon
                             :name="site.dark ? 'icon-moon' : 'icon-sun'"
                         ></c-icon>
                     </a-button>
                     <a-dropdown trigger="hover" @select="changeLocale">
-                        <a-button>{{
-                            getLocaleName(locale.current.locale)
-                        }}</a-button>
+                        <a-button>{{getLocaleName(locale.current.locale)}}</a-button>
                         <template #content>
-                            <a-doption v-for="item in locale.items">{{
-                                getLocaleName(item.locale)
-                            }}</a-doption>
+                            <a-doption v-for="item in locale.items" :key="item.locale.name">{{getLocaleName(item.locale)}}</a-doption>
                         </template>
                     </a-dropdown>
                     <a-dropdown v-if="user" trigger="hover">
@@ -63,7 +62,7 @@
                         <slot></slot>
                     </a-layout-content>
                     <a-layout-footer>
-                        <a-space v-for="item in site.copyright">
+                        <a-space v-for="item in site.copyright" :key="item">
                             <div v-html="item"></div>
                         </a-space>
                     </a-layout-footer>
@@ -104,7 +103,10 @@ export default {
             ],
             dark: false,
         });
-
+        const webapi=reactive({
+            current:'dotnet',
+            items:['mock','dotnet','java']
+        });
         const locale = reactive({
             current: zhCN,
             items: [zhCN, enUS],
@@ -126,6 +128,7 @@ export default {
         onMounted(init);
         return {
             site,
+            webapi,
             locale,
             menu,
             user,
