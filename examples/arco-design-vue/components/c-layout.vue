@@ -5,7 +5,7 @@
                 <a-space>
                     <router-link to="/" class="c-logo">
                         <a-space>
-                            <img :alt="name" :src="site.logo" />
+                            <img :alt="site.name" :src="site.logo" />
                             <h1>{{ site.name }}</h1>
                         </a-space>
                     </router-link>
@@ -112,7 +112,7 @@ export default {
             items: [],
         });
         const init = () => {
-            fetch(`api/${webapi.current}/menu.json`)
+            fetch(webapi.content('menu.json'))
                 .then((o) => o.json())
                 .then((o) => (menu.items = o));
         };

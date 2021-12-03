@@ -13,12 +13,14 @@
 </template>
 <script>
 const reactive  = Vue.reactive;
+const inject = Vue.inject;
 const onMounted = Vue.onMounted;
 const useRouter = VueRouter.useRouter;
 const useRoute = VueRouter.useRoute;
 
 export default {
     setup() {
+        const webapi = inject('webapi');
         const router = useRouter();
         const route = useRoute();
         const model = reactive ({
@@ -52,7 +54,7 @@ export default {
         model.form=Qs.parse(location.search?location.search.substr(1):null);
         const init = () => {
             var query = Qs.stringify(model.form);
-            var url = `/api/table.json${query?('?'+query):''}`;
+            var url = webapi.content(`table.json${query?('?'+query):''}`);
             fetch(url)
                 .then((o) => o.json())
                 .then((o) => {

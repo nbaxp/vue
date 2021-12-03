@@ -40,6 +40,9 @@
                     current:LocalStorageGetOrAddItem('webapi','mock'),
                     items:['mock','dotnet','java']
                 });
+                webapi.content=o=>{
+                    return `api/${webapi.current}/${o}`;
+                };
                 provide('webapi',webapi);
                 const theme = reactive({
                     current:LocalStorageGetOrAddItem('theme','light'),
