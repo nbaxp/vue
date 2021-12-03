@@ -1,5 +1,5 @@
 <template>
-    <a-config-provider :locale="locale.current">
+    <a-config-provider :locale="locale.items.get(locale.current)">
         <a-layout class="c-container">
             <a-layout-header>
                 <a-space>
@@ -11,18 +11,16 @@
                     </router-link>
                 </a-space>
                 <a-space>
-                        <a-select :default-value="webapi.current">
+                        <a-select :default-value="webapi.current" @change="changeBe">
                             <a-option v-for="item in webapi.items" :key="item">{{item}}</a-option>
                         </a-select>
-                    <a-button shape="circle" @click="changeTheme">
-                        <c-icon
-                            :name="site.dark ? 'icon-moon' : 'icon-sun'"
-                        ></c-icon>
+                    <a-button shape="circle" @click="theme.change(theme.current=='light'?'dark':'light')">
+                        <c-icon :name="theme.current==='dark' ? 'icon-moon' : 'icon-sun'"></c-icon>
                     </a-button>
-                    <a-dropdown trigger="hover" @select="changeLocale">
-                        <a-button>{{getLocaleName(locale.current.locale)}}</a-button>
+                    <a-dropdown trigger="hover" @select="locale.change">
+                        <a-button>{{locale.current}}</a-button>
                         <template #content>
-                            <a-doption v-for="item in locale.items" :key="item.locale.name">{{getLocaleName(item.locale)}}</a-doption>
+                            <a-doption v-for="item in locale.items" :key="item[0]">{{item[0]}}</a-doption>
                         </template>
                     </a-dropdown>
                     <a-dropdown v-if="user" trigger="hover">
@@ -80,10 +78,8 @@
     </a-config-provider>
 </template>
 <script>
-import zhCN from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/locale/lang/zh-cn.js";
-import enUS from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/locale/lang/en-us.js";
-
 const reactive = Vue.reactive;
+const inject = Vue.inject;
 const onMounted = Vue.onMounted;
 const useRouter = VueRouter.useRouter;
 const useRoute = VueRouter.useRoute;
@@ -94,6 +90,9 @@ export default {
         document.title = props.title;
         const router = useRouter();
         const route = useRoute();
+        const webapi=inject('webapi');
+        const theme=inject('theme');
+        const locale=inject('locale');
         const site = reactive({
             name: "Arco Design Vue",
             logo: "logo.svg",
@@ -103,14 +102,7 @@ export default {
             ],
             dark: false,
         });
-        const webapi=reactive({
-            current:'dotnet',
-            items:['mock','dotnet','java']
-        });
-        const locale = reactive({
-            current: zhCN,
-            items: [zhCN, enUS],
-        });
+
         const user = reactive({
             name: "admin",
             icon: "icon-user",
@@ -120,36 +112,25 @@ export default {
             items: [],
         });
         const init = () => {
-            fetch("api/menu.json")
+            fetch(`api/${webapi.current}/menu.json`)
                 .then((o) => o.json())
                 .then((o) => (menu.items = o));
         };
-        const getLocaleByName = (name) => (name === "简体中文" ? zhCN : enUS);
         onMounted(init);
         return {
-            site,
             webapi,
+            theme,
             locale,
+            site,
             menu,
             user,
-            changeLocale(name) {
-                locale.current = getLocaleByName(name);
-            },
-            getLocaleName(name) {
-                return name == "zh-CN" ? "简体中文" : "English";
-            },
-            getLocaleByName,
-            changeTheme() {
-                site.dark = !site.dark;
-                if (site.dark) {
-                    document.body.setAttribute("arco-theme", "dark");
-                } else {
-                    document.body.removeAttribute("arco-theme");
-                }
-            },
             onMenuItemClick(key) {
                 router.push(key);
             },
+            changeBe(e){
+                webapi.current=LocalStorageUpdateItem('webapi',e);
+                location.reload();
+            }
         };
     },
 };

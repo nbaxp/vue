@@ -7,7 +7,7 @@ fetchMock.catch(url => {
     return fetchMock.realFetch.bind(window)(url);
 });
 
-fetchMock.mock(/.*api\/table.json.*/, url => {
+fetchMock.mock(/.*api\/mock\/table.json.*/, url => {
     var search = new URL(`${document.baseURI.replace(document.location.hash, '')}${url}`).search;
     var query = search ? search.substring(1) : null;
     var model = Qs.parse(query);
