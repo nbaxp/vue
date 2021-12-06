@@ -12,49 +12,45 @@
     </c-layout>
 </template>
 <script>
-const reactive  = Vue.reactive;
-const inject = Vue.inject;
-const onMounted = Vue.onMounted;
-const useRouter = VueRouter.useRouter;
-const useRoute = VueRouter.useRoute;
-
 export default {
     setup() {
-        const webapi = inject('webapi');
+        const webapi = inject("webapi");
         const router = useRouter();
         const route = useRoute();
-        const model = reactive ({
+        const model = reactive({
             //paged
             //data
             //schema
             //form
         });
-        model.schema={
-            "title":"列表项",
-            "type":"object",
-            "properties":{
-                "count":{
-                    "title":"总数",
-                    "type":"integer"
+        model.schema = {
+            title: "列表项",
+            type: "object",
+            properties: {
+                count: {
+                    title: "总数",
+                    type: "integer",
                 },
-                "pageSize":{
-                    "title":"页码",
-                    "type":"integer"
+                pageSize: {
+                    title: "页码",
+                    type: "integer",
                 },
-                "pageIndex":{
-                    "title":"当前页",
-                    "type":"integer"
+                pageIndex: {
+                    title: "当前页",
+                    type: "integer",
                 },
-                "name":{
-                    "title":"string类型",
-                    "type":"string"
-                }
-            }
+                name: {
+                    title: "string类型",
+                    type: "string",
+                },
+            },
         };
-        model.form=Qs.parse(location.search?location.search.substr(1):null);
+        model.form = Qs.parse(
+            location.search ? location.search.substr(1) : null
+        );
         const init = () => {
             var query = Qs.stringify(model.form);
-            var url = webapi.content(`table.json${query?('?'+query):''}`);
+            var url = webapi.content(`table.json${query ? "?" + query : ""}`);
             fetch(url)
                 .then((o) => o.json())
                 .then((o) => {
@@ -70,21 +66,19 @@ export default {
             model,
             init,
             change,
-            nav(){
-                let params  = new URLSearchParams(Qs.stringify(model.form));
-                params.delete('total');
-                if(params.get('pageIndex')==1)
-                {
-                    params.delete('pageIndex');
+            nav() {
+                let params = new URLSearchParams(Qs.stringify(model.form));
+                params.delete("total");
+                if (params.get("pageIndex") == 1) {
+                    params.delete("pageIndex");
                 }
-                if(params.get('pageSize')==10)
-                {
-                    params.delete('pageSize');
+                if (params.get("pageSize") == 10) {
+                    params.delete("pageSize");
                 }
                 var query = params.toString();
-                var path = route.path+(query?('?'+query):'');
+                var path = route.path + (query ? "?" + query : "");
                 router.push(path);
-            }
+            },
         };
     },
 };

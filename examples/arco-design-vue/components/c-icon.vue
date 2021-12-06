@@ -1,8 +1,8 @@
 <template>
-    <component :is="name"></component>
+    <component :is="name" />
 </template>
 <script>
-    export default{
-        props:['name']
-    };
+export default {
+    props: ["name"],
+};
 </script>

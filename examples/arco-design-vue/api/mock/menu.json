@@ -22,7 +22,7 @@
     {
         "path": "list",
         "name": "列表页",
-        "icon":"icon-list",
+        "icon": "icon-list",
         "children": [
             {
                 "path": "/table",

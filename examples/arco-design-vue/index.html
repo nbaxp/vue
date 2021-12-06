@@ -20,55 +20,60 @@
     <script src="https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/dist/arco-vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/dist/arco-vue-icon.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qs@6.10.1/dist/qs.js"></script>
-    <script src="util.js" ></script>
-    <script type="module" src="mock.js" ></script>
+    <script src="util.js"></script>
+    <script type="module" src="mock.js"></script>
     <script type="module">
         import zhCN from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/locale/lang/zh-cn.js";
         import enUS from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/locale/lang/en-us.js";
 
         const createApp = Vue.createApp;
-        const defineAsyncComponent = Vue.defineAsyncComponent;
-        const reactive = Vue.reactive;
-        const provide = Vue.provide;
         const createRouter = VueRouter.createRouter;
         const createWebHistory = VueRouter.createWebHistory;
         const createWebHashHistory = VueRouter.createWebHashHistory;
+        const defineAsyncComponent = Vue.defineAsyncComponent;
+        window.onMounted = Vue.onMounted;
+        window.ref = Vue.ref;
+        window.reactive = Vue.reactive;
+        window.provide = Vue.provide;
+        window.inject = Vue.inject;
+        window.useRouter = VueRouter.useRouter;
+        window.useRoute = VueRouter.useRoute;
 
         const app = createApp({
-            setup(){
+            setup() {
                 const webapi = reactive({
-                    current:LocalStorageGetOrAddItem('webapi','mock'),
-                    items:['mock','dotnet','java']
+                    current: LocalStorageGetOrAddItem('webapi', 'mock'),
+                    items: ['mock', 'dotnet', 'java']
                 });
-                webapi.content=o=>{
+                webapi.content = o => {
                     return `api/${webapi.current}/${o}`;
                 };
-                provide('webapi',webapi);
+                provide('webapi', webapi);
                 const theme = reactive({
-                    current:LocalStorageGetOrAddItem('theme','light'),
-                    items:['light','dark']
+                    current: LocalStorageGetOrAddItem('theme', 'light'),
+                    items: ['light', 'dark']
                 });
-                provide('theme',theme);
-                theme.change=o=>{
-                    theme.current = LocalStorageUpdateItem('theme',o);
-                    if(theme.current==='dark') {
+                provide('theme', theme);
+                theme.change = o => {
+                    theme.current = LocalStorageUpdateItem('theme', o);
+                    if (theme.current === 'dark') {
                         document.body.setAttribute("arco-theme", "dark");
                     } else {
                         document.body.removeAttribute("arco-theme");
                     }
                 };
                 theme.change(theme.current);
-                const locale= reactive({
-                    current: LocalStorageGetOrAddItem('locale','简体中文'),
+                const locale = reactive({
+                    current: LocalStorageGetOrAddItem('locale', '简体中文'),
                     items: new Map([
-                        ['简体中文',zhCN],
-                        ['English',enUS]
+                        ['简体中文', zhCN],
+                        ['English', enUS]
                     ])
                 });
-                locale.change=o=>{
-                    locale.current=LocalStorageUpdateItem('locale',o);
+                locale.change = o => {
+                    locale.current = LocalStorageUpdateItem('locale', o);
                 };
-                provide('locale',locale);
+                provide('locale', locale);
                 return {};
             }
         });
