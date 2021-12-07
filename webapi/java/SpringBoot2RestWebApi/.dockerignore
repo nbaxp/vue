@@ -2,8 +2,8 @@
 docker-compose*.yml
 .git
 .gitignore
-.vs
-.vscode
+.gradle
+.idea
 **/bin/
-**/obj/
+**/build/
 **/node_modules/

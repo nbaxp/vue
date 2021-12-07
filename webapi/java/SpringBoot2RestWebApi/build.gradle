@@ -9,14 +9,20 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
+    maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
     mavenCentral()
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.13'
 }
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+	enabled = false
 }

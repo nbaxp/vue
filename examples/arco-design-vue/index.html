@@ -20,6 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/dist/arco-vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/dist/arco-vue-icon.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qs@6.10.1/dist/qs.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr@6.0.0/dist/browser/signalr.js"></script>
     <script src="util.js"></script>
     <script type="module" src="mock.js"></script>
     <script type="module">
@@ -99,6 +100,29 @@
         VueBrowserSfc.config.componentExt = ".vue";
         app.use(VueBrowserSfc, defineAsyncComponent);
         app.mount("#root");
+    </script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/api/dotnet/chathub")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        async function start() {
+            try {
+                await connection.start();
+                console.log("SignalR Connected.");
+            } catch (err) {
+                console.log(err);
+                setTimeout(start, 5000);
+            }
+        };
+
+        connection.onclose(async () => {
+            await start();
+        });
+
+        // Start the connection.
+        start();
     </script>
 </body>
 

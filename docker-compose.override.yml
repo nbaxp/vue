@@ -4,3 +4,9 @@ services:
     image: webapi/aspnet:latest
     build:
       context: webapi/dotnet/DotNet6WebApi/
+      dockerfile: Dockerfile
+  java:
+    image: webapi/springboot:latest
+    build:
+      context: webapi/java/SpringBoot2RestWebApi
+      dockerfile: Dockerfile
