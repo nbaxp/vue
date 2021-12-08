@@ -15,8 +15,9 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springdoc:springdoc-openapi-ui:1.5.13'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {

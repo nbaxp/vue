@@ -1,10 +1,19 @@
 version: "3.8"
 services:
-  dotnet:
+  dotnet1:
     image: webapi/aspnet:latest
     build:
       context: webapi/dotnet/DotNet6WebApi/
       dockerfile: Dockerfile
+    depends_on:
+      - redis.signalr
+  dotnet2:
+    image: webapi/aspnet:latest
+    build:
+      context: webapi/dotnet/DotNet6WebApi/
+      dockerfile: Dockerfile
+    depends_on:
+      - redis.signalr
   java:
     image: webapi/springboot:latest
     build:

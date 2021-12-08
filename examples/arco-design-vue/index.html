@@ -103,7 +103,7 @@
     </script>
     <script>
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/api/dotnet/chathub")
+            .withUrl("/api/dotnet/hub")
             .configureLogging(signalR.LogLevel.Information)
             .build();
 
