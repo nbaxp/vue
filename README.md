@@ -14,10 +14,13 @@
 ## 开发环境
 
 1. vscode v1.62.3[ESLint v2.2.2]
-2. node -v => v16.13.1
-3. npm -v => 7.19.1
-4. npm install --save-dev eslint eslint-plugin-vue
-5. ./node_modules/.bin/eslint --init
+1. node -v => v16.13.1
+1. npm -v => 7.19.1
+1. npm install --save-dev eslint eslint-plugin-vue
+1. ./node_modules/.bin/eslint --init
+1. Docker Desktop 4.2.0
+1. Microsoft Visual Studio Community 2022 => dotnet 6
+1. IntelliJ IDEA 2021.2 Community Edition => java 8
 
 ## frontend
 
@@ -36,6 +39,11 @@
 1. [x] redis for signalr
 1. [x] spring boot rest with CORS
 1. [x] spring boot websocket
+
+## 难点
+
+1. [ ] websocket 负载均衡
+1. [ ] token 权限缓存
 
 ## 引用
 

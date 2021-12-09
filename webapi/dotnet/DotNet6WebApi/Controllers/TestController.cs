@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Http.Extensions;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DotNet6WebApi.Controllers
 {
@@ -9,9 +14,9 @@ namespace DotNet6WebApi.Controllers
     public class TestController : ControllerBase
     {
         [HttpGet]
-        public JsonResult Get()
+        public object Get()
         {
-            return new JsonResult(new
+            return new
             {
                 Version = "0.0.6",
                 Server = Request.HttpContext.Features.Get<IHttpConnectionFeature>()?.LocalIpAddress?.ToString(),
@@ -19,7 +24,28 @@ namespace DotNet6WebApi.Controllers
                 HeaderKeys = string.Join(';', Request.Headers.Keys),
                 HostValue = Request.Host.Value,
                 RemoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress?.ToString()
-            });
+            };
+        }
+
+        [HttpGet("authentication"), Authorize]
+        public object Authentication()
+        {
+            User.IsInRole("test");
+            return "ok";
+        }
+
+        [HttpGet("login"), AllowAnonymous]
+        public object Login(string userName)
+        {
+            var cfg = Request.HttpContext.RequestServices.GetService<IConfiguration>();
+            var issuer = cfg.GetValue("Jwt:Issuer", "value");
+            var audience = cfg.GetValue("Jwt:Audience", "value");
+            var key = cfg.GetValue("Jwt:Audience", "0123456789abcdef");
+            var expires = DateTime.Now.AddMinutes(cfg.GetValue("Jwt:Expires", 30));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+            var token = new JwtSecurityToken(issuer, audience, new Claim[] { new Claim(ClaimTypes.Name, userName) }, null, expires, credentials);
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
