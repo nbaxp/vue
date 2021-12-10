@@ -36,3 +36,9 @@ services:
         ports:
             - 6379:6379
         command: redis-server --requirepass aA123456!
+    db.cockroachdb:
+        image: cockroachdb/cockroach:latest-v21.2
+        ports:
+            - 26257:26257
+            - 8080:8080
+        command: start-single-node --insecure

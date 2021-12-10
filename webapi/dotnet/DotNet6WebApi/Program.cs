@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -69,7 +70,26 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerPostConfigureOptions>());
 builder.Services.AddSingleton(new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature));
-
+builder.Services.AddScoped<DbContext, ApplicationDbContext>();
+builder.Services.AddDbContext<ApplicationDbContext>(
+        options =>
+        {
+            //var configuration = options.pro.GetRequiredService<IConfiguration>();
+            var db = builder.Configuration.GetValue("db", "sqlite");
+            var connectionString = builder.Configuration.GetConnectionString($"db.{db}");
+            if (db == "mysql")
+            {
+                options.UseMySql(connectionString, ServerVersion.Parse(connectionString));
+            }
+            else if (db == "cockroachdb")
+            {
+                options.UseNpgsql(connectionString);
+            }
+            else
+            {
+                options.UseSqlite(connectionString);
+            }
+        });
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -92,5 +112,12 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapHub<TestHub>("/hub");
 });
-
+using var scope = app.Services.CreateScope();
+using var db = scope.ServiceProvider.GetRequiredService<DbContext>();
+if (db.Database.EnsureCreated())
+{
+    //db.Seed();
+    db.Set<User>().Add(new User { UserName = "admin" });
+    db.SaveChanges();
+}
 app.Run();
