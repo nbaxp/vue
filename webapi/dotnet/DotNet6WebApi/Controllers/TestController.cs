@@ -27,10 +27,10 @@ namespace DotNet6WebApi.Controllers
             };
         }
 
-        [HttpGet("authentication"), Authorize]
+        [HttpGet("authentication"), Authorize(Roles = "admin,user")]
         public object Authentication()
         {
-            User.IsInRole("test");
+            var test = User.IsInRole("test");
             return "ok";
         }
 

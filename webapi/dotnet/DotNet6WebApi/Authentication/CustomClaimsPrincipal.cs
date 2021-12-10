@@ -1,10 +1,10 @@
 ﻿using System.Security.Claims;
 
-public class RoleClaimsPrincipal : ClaimsPrincipal
+public class CustomClaimsPrincipal : ClaimsPrincipal
 {
     private readonly IRoleService _roleService;
 
-    public RoleClaimsPrincipal(IRoleService roleService, ClaimsPrincipal claimsPrincipal) : base(claimsPrincipal)
+    public CustomClaimsPrincipal(IRoleService roleService, ClaimsPrincipal claimsPrincipal) : base(claimsPrincipal)
     {
         this._roleService = roleService;
     }

@@ -2,11 +2,11 @@
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 
-public class RoleJwtSecurityTokenHandler : JwtSecurityTokenHandler
+public class CustomJwtSecurityTokenHandler : JwtSecurityTokenHandler
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public RoleJwtSecurityTokenHandler(IServiceProvider serviceProvider)
+    public CustomJwtSecurityTokenHandler(IServiceProvider serviceProvider)
     {
         this._serviceProvider = serviceProvider;
     }
@@ -16,6 +16,6 @@ public class RoleJwtSecurityTokenHandler : JwtSecurityTokenHandler
         var claimsPrincipal = base.ValidateToken(token, validationParameters, out validatedToken);
         using var scope = this._serviceProvider.CreateScope();
         var roleService = scope.ServiceProvider.GetRequiredService<IRoleService>();
-        return new RoleClaimsPrincipal(roleService, claimsPrincipal);
+        return new CustomClaimsPrincipal(roleService, claimsPrincipal);
     }
 }

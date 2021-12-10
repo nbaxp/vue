@@ -1,6 +1,6 @@
 ﻿public class RoleService : IRoleService
 {
-    private List<string> RoleRepository = new List<string> { };
+    private List<string> RoleRepository = new List<string> {"admin1","user" };
 
     private string[]? _roles = null;
 
@@ -15,6 +15,6 @@
 
     public bool IsInRole(string roleName)
     {
-        return RoleRepository.Any(o => o.Contains(roleName));
+        return RoleRepository.Any(o => o==roleName);
     }
 }
