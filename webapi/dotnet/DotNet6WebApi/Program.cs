@@ -71,17 +71,16 @@ builder.Services.AddAuthentication(options =>
 builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerPostConfigureOptions>());
 builder.Services.AddSingleton(new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature));
 builder.Services.AddScoped<DbContext, ApplicationDbContext>();
+var dbKey = builder.Configuration.GetValue("Database", "sqlite");
+var connectionString = builder.Configuration.GetConnectionString($"db.{dbKey}");
 builder.Services.AddDbContext<ApplicationDbContext>(
         options =>
         {
-            //var configuration = options.pro.GetRequiredService<IConfiguration>();
-            var db = builder.Configuration.GetValue("db", "sqlite");
-            var connectionString = builder.Configuration.GetConnectionString($"db.{db}");
-            if (db == "mysql")
+            if (dbKey == "mysql")
             {
-                options.UseMySql(connectionString, ServerVersion.Parse(connectionString));
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             }
-            else if (db == "cockroachdb")
+            else if (dbKey == "cockroachdb")
             {
                 options.UseNpgsql(connectionString);
             }

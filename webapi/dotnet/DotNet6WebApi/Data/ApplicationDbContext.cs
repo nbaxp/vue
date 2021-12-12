@@ -6,6 +6,11 @@ public class ApplicationDbContext : DbContext
     {
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.LogTo(Console.WriteLine);
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         var entityTypes = modelBuilder.Model.GetEntityTypes().ToList();
