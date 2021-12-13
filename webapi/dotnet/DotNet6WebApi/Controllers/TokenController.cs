@@ -25,6 +25,7 @@ namespace DotNet6WebApi.Controllers
             _credentials = credentials;
         }
 
+        [ResponseCache(NoStore = true)]
         [HttpGet()]
         public object GetToken(string username)
         {
@@ -45,11 +46,12 @@ namespace DotNet6WebApi.Controllers
             };
             var securityToken = handler.CreateJwtSecurityToken(tokenDescriptor);
             var token = handler.WriteToken(securityToken);
-            return new {
-                token_type= JwtBearerDefaults.AuthenticationScheme,
-                expires_in= timeout,
-                refresh_token=token,
-                access_token = token
+            return new
+            {
+                access_token = token,
+                token_type = JwtBearerDefaults.AuthenticationScheme,
+                expires_in = timeout,
+                refresh_token = token,
             };
         }
     }
