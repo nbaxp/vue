@@ -26,10 +26,13 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet()]
-        public string GetToken(string username)
+        public object GetToken(string username)
         {
-            var expires = _configuration.GetValue("Jwt:Expires", 30);
-            var claims = new Claim[] { new Claim(_options.TokenValidationParameters.NameClaimType, username) };
+            var timeout = _configuration.GetValue("Jwt:Expires", 30);
+            var claims = new Claim[] {
+                new Claim(_options.TokenValidationParameters.NameClaimType, username),
+                new Claim("NickName","管理員")
+            };
             var identity = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme);
             var handler = _options.SecurityTokenValidators.OfType<JwtSecurityTokenHandler>().First();
             var tokenDescriptor = new SecurityTokenDescriptor()
@@ -38,11 +41,16 @@ namespace DotNet6WebApi.Controllers
                 Audience = _options.TokenValidationParameters.ValidAudience,
                 SigningCredentials = _credentials,
                 Subject = identity,
-                Expires = DateTime.UtcNow.AddMinutes(expires),
+                Expires = DateTime.UtcNow.AddMinutes(timeout),
             };
             var securityToken = handler.CreateJwtSecurityToken(tokenDescriptor);
             var token = handler.WriteToken(securityToken);
-            return token;
+            return new {
+                token_type= JwtBearerDefaults.AuthenticationScheme,
+                expires_in= timeout,
+                refresh_token=token,
+                access_token = token
+            };
         }
     }
 }

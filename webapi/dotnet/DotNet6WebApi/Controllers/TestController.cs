@@ -18,6 +18,7 @@ namespace DotNet6WebApi.Controllers
         {
             return new
             {
+                Test="测试",
                 Version = "0.0.6",
                 Server = Request.HttpContext.Features.Get<IHttpConnectionFeature>()?.LocalIpAddress?.ToString(),
                 Request = Request.GetDisplayUrl(),

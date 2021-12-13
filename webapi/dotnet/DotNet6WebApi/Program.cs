@@ -19,8 +19,7 @@ builder.Services.AddCors(options =>
          .AllowCredentials();
      });
 });
-builder.Services.AddSignalR()
-    .AddStackExchangeRedis(builder.Configuration.GetConnectionString("redis.signalr"), o => o.Configuration.ChannelPrefix = "signalr");
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -70,6 +69,10 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerPostConfigureOptions>());
 builder.Services.AddSingleton(new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature));
+
+builder.Services.AddSignalR()
+    .AddStackExchangeRedis(builder.Configuration.GetConnectionString("redis.signalr"), o => o.Configuration.ChannelPrefix = "signalr");
+
 builder.Services.AddScoped<DbContext, ApplicationDbContext>();
 var dbKey = builder.Configuration.GetValue("Database", "sqlite");
 var connectionString = builder.Configuration.GetConnectionString($"db.{dbKey}");
@@ -104,15 +107,18 @@ var webSocketOptions = new WebSocketOptions()
 app.UseWebSockets();
 app.MapControllers();
 app.UseRouting();
+
 app.UseCors(origins);
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapHub<TestHub>("/hub");
 });
 using var scope = app.Services.CreateScope();
 using var db = scope.ServiceProvider.GetRequiredService<DbContext>();
+
 if (db.Database.EnsureCreated())
 {
     //db.Seed();
