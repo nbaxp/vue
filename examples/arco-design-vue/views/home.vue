@@ -1,37 +1,30 @@
 <template>
-    <c-layout>
-        <div
-            style="
-                padding: 1em;
-                box-sizing: border-box;
-                width: 100%;
-                height: 100%;
-            "
-        >
-            <a-tabs lazy-load type="card">
-                <a-tab-pane
-                    v-for="group in arcoComponents"
-                    :key="group.name"
-                    :title="group.name"
-                >
-                    <a-tabs lazy-load type="card" position="left">
-                        <a-tab-pane
-                            v-for="item in group.children"
-                            :key="item.key"
-                            :title="item.name"
-                        >
-                            <a-card>
-                                <c-iframe
-                                    :style="style"
-                                    :src="getSrc(item.key, item.path)"
-                                ></c-iframe>
-                            </a-card>
-                        </a-tab-pane>
-                    </a-tabs>
-                </a-tab-pane>
-            </a-tabs>
-        </div>
-    </c-layout>
+    <div
+        style="padding: 1em; box-sizing: border-box; width: 100%; height: 100%"
+    >
+        <a-tabs lazy-load type="card">
+            <a-tab-pane
+                v-for="group in arcoComponents"
+                :key="group.name"
+                :title="group.name"
+            >
+                <a-tabs lazy-load type="card" position="left">
+                    <a-tab-pane
+                        v-for="item in group.children"
+                        :key="item.key"
+                        :title="item.name"
+                    >
+                        <a-card>
+                            <c-iframe
+                                :style="style"
+                                :src="getSrc(item.key, item.path)"
+                            ></c-iframe>
+                        </a-card>
+                    </a-tab-pane>
+                </a-tabs>
+            </a-tab-pane>
+        </a-tabs>
+    </div>
 </template>
 <script>
 export default {

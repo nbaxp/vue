@@ -35,6 +35,12 @@ namespace DotNet6WebApi.Controllers
             return "ok";
         }
 
+        [HttpGet("un-authentication"), Authorize(Roles = "test")]
+        public object UnAuthentication()
+        {
+            return "ok";
+        }
+
         [HttpGet("login"), AllowAnonymous]
         public object Login(string userName)
         {
