@@ -61,7 +61,7 @@ var tokenValidationParameters = new TokenValidationParameters
     IssuerSigningKey = key,
     NameClaimType = "Name",
     RoleClaimType = "Role",
-    //ClockSkew = TimeSpan.Zero,//default 300
+    ClockSkew = TimeSpan.Zero,//default 300
 };
 builder.Services.AddSingleton<TokenValidationParameters>(tokenValidationParameters);
 

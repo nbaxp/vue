@@ -23,8 +23,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/dist/arco-vue-icon.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qs@6.10.1/dist/qs.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr@6.0.0/dist/browser/signalr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.js"></script>
     <script src="util.js"></script>
-    <script type="module" src="mock.js"></script>
+    <!-- <script type="module" src="mock.js"></script> -->
     <script type="module">
         import zhCN from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/locale/lang/zh-cn.js";
         import enUS from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/locale/lang/en-us.js";
@@ -35,6 +36,7 @@
         const createWebHashHistory = VueRouter.createWebHashHistory;
         const defineAsyncComponent = Vue.defineAsyncComponent;
         window.onMounted = Vue.onMounted;
+        window.onUnmounted = Vue.onUnmounted;
         window.ref = Vue.ref;
         window.reactive = Vue.reactive;
         window.provide = Vue.provide;
@@ -44,6 +46,8 @@
 
         const app = createApp({
             setup() {
+                const router = useRouter();
+                //webapi
                 const webapi = reactive({
                     current: LocalStorageGetOrAddItem('webapi', 'mock'),
                     items: ['mock', 'dotnet', 'java']
@@ -52,6 +56,8 @@
                     return `api/${webapi.current}/${o}`;
                 };
                 provide('webapi', webapi);
+
+                //theme
                 const theme = reactive({
                     current: LocalStorageGetOrAddItem('theme', 'light'),
                     items: ['light', 'dark']
@@ -66,6 +72,8 @@
                     }
                 };
                 theme.change(theme.current);
+
+                //locale
                 const locale = reactive({
                     current: LocalStorageGetOrAddItem('locale', '简体中文'),
                     items: new Map([
@@ -77,6 +85,90 @@
                     locale.current = LocalStorageUpdateItem('locale', o);
                 };
                 provide('locale', locale);
+
+                //token
+                const token = reactive({
+                    access_token: null,
+                    expiry: null
+                });
+                const logoutKey = 'logout';
+                token.logout = () => {
+                    const url = webapi.content('logout');
+                    fetch(url, {
+                        method: 'POST',
+                        credentials: 'include',
+                    }).then(o => {
+                        window.localStorage.setItem(logoutKey, Date.now());
+                    });
+                };
+                token.refresh = async () => {
+                    const url = `${location.protocol}//${location.host}/api/dotnet/refresh_token`;
+                    try {
+                        const response = await fetch(url, {
+                            method: "POST",
+                            credentials: "include",
+                        });
+                        if (response.status === 200) {
+                            const result = await response.json();
+                            token.access_token = result.access_token;
+                            token.expiry = result.expires_in;
+                            return true;
+                        }
+                        else {
+                            console.log(response.statusText);
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    return false;
+                };
+                token.startRefresh = () => {
+                    token.timer = setInterval(async () => {
+                        const exp = jwt_decode(token.access_token).exp * 1000;
+                        if (exp - Date.now() < 1000 * 10) {
+                            console.debug(`已过期，开始刷新token`);
+                            if (!await token.refresh()) {
+                                console.debug('刷新失败，停止定时刷新，跳转到登录页');
+                                clearInterval(token.timer);
+                                token.access_token = null;
+                                router.push('/login');
+                            }
+                            else {
+                                console.debug('刷新token成功');
+                            }
+                        }
+                        else {
+                            console.debug(`无需刷新token,到期时间：${new Date(exp)}`);
+                        }
+                    }, 1000 * 200);
+                };
+                const logout = (e) => {
+                    if (e.key === logoutKey) {
+                        clearInterval(token.timer);
+                        token.access_token = null;
+                        router.push('/login');
+                    }
+                };
+                provide('token', token);
+                onMounted(async () => {
+                    window.addEventListener('storage', logout);
+                    //load
+                    console.debug('会话开始，尝试刷新token');
+                    if (await token.refresh()) {
+                        console.debug('刷新成功，开始定时刷新token');
+                        token.startRefresh();
+                    }
+                    else {
+                        console.debug('刷新失败，跳转到登录页');
+                        router.push('/login');
+                    }
+                });
+                //onUnmounted
+                onUnmounted(() => {
+                    window.removeEventListener('storage', logout);
+                    window.localStorage.removeItem('logout');
+                });
+                //return
                 return {};
             }
         });

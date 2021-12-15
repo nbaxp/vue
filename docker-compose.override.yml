@@ -14,8 +14,8 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - redis.signalr
-  java:
-    image: webapi/springboot:latest
-    build:
-      context: webapi/java/SpringBoot2RestWebApi
-      dockerfile: Dockerfile
+  # java:
+  #   image: webapi/springboot:latest
+  #   build:
+  #     context: webapi/java/SpringBoot2RestWebApi
+  #     dockerfile: Dockerfile

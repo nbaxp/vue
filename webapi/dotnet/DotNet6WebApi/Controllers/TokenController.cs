@@ -45,7 +45,7 @@ namespace DotNet6WebApi.Controllers
             var now = DateTime.UtcNow;
             var accessTokenTimeout = _configuration.GetValue("Jwt:AccessTokenExpires", 3600);
             var accessToken = CreateToken(claimsIdentity, now, accessTokenTimeout);
-            var refreshTokenTimeout = _configuration.GetValue("Jwt:AccessTokenExpires", 1209600);//3600 * 24 * 7 * 2
+            var refreshTokenTimeout = _configuration.GetValue("Jwt:RefreshTokenExpires", 1209600);//3600 * 24 * 7 * 2
             var refreshToken = CreateToken(claimsIdentity, now, refreshTokenTimeout);
 
             Response.Cookies.Delete(_cookieKey, _cookieOptions);
@@ -68,6 +68,10 @@ namespace DotNet6WebApi.Controllers
                 var refresh_token = Request.Cookies[_cookieKey];
                 var claimsPrincipal = _jwtSecurityTokenHandler.ValidateToken(refresh_token, _tokenValidationParameters, out SecurityToken validatedToken);
                 return this.GetToken(claimsPrincipal?.Identity?.Name!);
+            }
+            catch(SecurityTokenExpiredException ex)
+            {
+                return this.Unauthorized(ex);
             }
             catch (Exception ex)
             {
