@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using DotNet6WebApi.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -98,6 +99,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
                 options.UseSqlite(connectionString);
             }
         });
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

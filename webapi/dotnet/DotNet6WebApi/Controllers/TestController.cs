@@ -1,11 +1,15 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using DotNet6WebApi.Json;
+using DotNet6WebApi.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using NJsonSchema;
+using NJsonSchema.Generation;
 
 namespace DotNet6WebApi.Controllers
 {
@@ -18,7 +22,7 @@ namespace DotNet6WebApi.Controllers
         {
             return new
             {
-                Test="测试",
+                Test = "测试",
                 Version = "0.0.6",
                 Server = Request.HttpContext.Features.Get<IHttpConnectionFeature>()?.LocalIpAddress?.ToString(),
                 Request = Request.GetDisplayUrl(),
@@ -53,6 +57,36 @@ namespace DotNet6WebApi.Controllers
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             var token = new JwtSecurityToken(issuer, audience, new Claim[] { new Claim(ClaimTypes.Name, userName) }, null, expires, credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        [HttpGet("scheam/{name}")]
+        public IActionResult JsonSchemaNetGeneration([FromRoute] string name)
+        {
+            var type = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(o => o.GetTypes())
+                .Where(t => t.GetInterfaces().Any(o => o.GetType() == typeof(IViewModel)))
+                .Where(t => t.Name == name)
+                .FirstOrDefault();
+            var schema = new { };
+            return Ok(schema);
+        }
+
+        [HttpGet("NJsonSchema")]
+        public IActionResult NJsonSchema()
+        {
+            var settings = new JsonSchemaGeneratorSettings
+            {
+                SerializerSettings = null,
+                SerializerOptions = new System.Text.Json.JsonSerializerOptions
+                {
+                    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
+                },
+                SchemaNameGenerator = new CustomSchemaNameGenerator(),
+                
+            };
+            var generator = new CustomJsonSchemaGenerator(settings);
+            var schema = generator.Generate(typeof(TestViewModel));
+            return Ok(schema.ToJson());
         }
     }
 }

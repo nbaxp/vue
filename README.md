@@ -58,3 +58,5 @@
 1. <https://ionic.io/ionicons>
 1. <https://pro.iviewui.com/pro/introduce>
 1. <https://caniuse.com/>
+1. <https://docs.microsoft.com/zh-cn/azure/active-directory/develop/v2-oauth2-auth-code-flow>
+1. <https://json-schema.apifox.cn/>

@@ -34,7 +34,7 @@ namespace DotNet6WebApi.Controllers
 
         [ResponseCache(NoStore = true)]
         [HttpPost("/token")]
-        public IActionResult GetToken(string username)
+        public IActionResult GetToken([FromForm]string username)
         {
             var claims = new Claim[] {
                 new Claim(_options.TokenValidationParameters.NameClaimType, username),

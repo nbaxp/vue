@@ -1,26 +1,45 @@
 <template>
-    <a-form :model="form" :style="{ width: '600px' }">
-        <a-form-item>
-            <a-button @click="login">Submit</a-button>
-        </a-form-item>
-    </a-form>
+    <c-form v-model="model" :schema="modelSchema"></c-form>
+    <a-button @click="login">Submit</a-button>
 </template>
 <script>
 export default {
     setup() {
         const webapi = inject("webapi");
         const token = inject("token");
+        const router = useRouter();
+        const model = reactive({
+            username: null,
+            password: null,
+        });
+        const modelSchema = {
+            type: "object",
+            properties: {
+                username: {
+                    type: "string",
+                    title: "用户名",
+                },
+                password: {
+                    type: "string",
+                    title: "密码",
+                    format:"password"
+                },
+            },
+            title: "登录",
+        };
         return {
+            model,
+            modelSchema,
             login() {
                 const url = `${location.protocol}//${location.host}/api/dotnet/token?username=admin`;
                 fetch(url, {
                     method: "POST",
                     credentials: "include",
                     headers: {
-                        //"Content-Type": "application/json",
+                        "Content-Type": "application/x-www-form-urlencoded",
                         "Cache-Control": "no-cache",
                     },
-                    body: '"admin"',
+                    body: "username=admin",
                 })
                     .then((o) => o.json())
                     .then((o) => {
@@ -28,7 +47,7 @@ export default {
                         token.expiry = o.expires_in;
                         console.debug("登录成功，开始刷新token");
                         token.startRefresh();
-                        
+                        router.push("/");
                     });
             },
         };
