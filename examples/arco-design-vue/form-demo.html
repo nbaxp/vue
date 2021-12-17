@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>vue form demo</title>
+</head>
+
+<body>
+    <div id="app">
+        <form :title="schema.title" method="post">
+            <div v-for="(value,key,index) in schema.properties">
+                <label>{{value.title}}</label><input type="text" v-model="model[key]" @keyup="valid" />
+            </div>
+            <button type="submit">submit</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.22/dist/vue.global.js"></script>
+    <script>
+    </script>
+    <script>
+        const app = Vue.createApp({
+            setup() {
+                const schema = {
+                    title: "表单",
+                    properties: {
+                        username: {
+                            title: "用户名",
+                            type: "string"
+                        },
+                        password: {
+                            title: "密码",
+                            type: "string",
+                        }
+                    }
+                };
+                const model = Vue.reactive({
+                    username: "admin",
+                    password: null
+                });
+                return {
+                    schema,
+                    model,
+                    valid() {
+                        console.debug(model);
+                    }
+                };
+            }
+        }
+        ).mount('#app');
+    </script>
+</body>
+
+</html>

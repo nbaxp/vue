@@ -1,6 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using DotNet6WebApi.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -76,7 +75,7 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerPostConfigureOptions>());
 builder.Services.AddSingleton(new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature));
-
+builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR()
     .AddStackExchangeRedis(builder.Configuration.GetConnectionString("redis.signalr"), o => o.Configuration.ChannelPrefix = "signalr");
 
@@ -113,13 +112,15 @@ var webSocketOptions = new WebSocketOptions()
     KeepAliveInterval = TimeSpan.FromSeconds(120),
 };
 app.UseWebSockets();
-app.MapControllers();
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseCors(origins);
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapHub<TestHub>("/hub");

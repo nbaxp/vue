@@ -1,20 +1,19 @@
 <template>
-    <a-form :model="modelValue">
-        <a-form-item
-            v-for="item in items"
-            :field="item.field"
-            :label="item.label"
-        >
-            <a-input v-model="item.name" :placeholder="item.description" />
-            <template #help>
-                <div>help message</div>
+    <h2>{{ schema.title }}</h2>
+    <template v-for="item in schema.properties">
+        <div>
+            <template v-if="item.oneOf">
+                <label>${{ item.title }}=>{{ item.oneOf }}</label>
             </template>
-        </a-form-item>
-    </a-form>
+            <template v-else>
+                <label>#{{ item.title }}:</label>
+            </template>
+        </div>
+    </template>
 </template>
 <script>
 export default {
-    props: ["modelValue"],
+    props: ["schema"],
     setup(props) {
         const items = ref([]);
         return {

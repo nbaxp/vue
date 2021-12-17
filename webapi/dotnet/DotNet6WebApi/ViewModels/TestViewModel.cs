@@ -10,11 +10,11 @@ public class TestViewModel
 {
     [Description("数字、字母、下划线组成，长度不超过20")]
     [StringLength(20, MinimumLength = 5)]
-    [RegularExpression("[z-zA-Z0-9@\\._]{5,20}")]
+    [RegularExpression("[a-zA-Z0-9_]+")]
     [UIHint("UserNameUI")]//已扩展到format
     [DataType("custom")]//已扩展到format
     [Required(ErrorMessage = "必须填写用户名")]//ErrorMessage未解析，待解决
-    [Remote("action", "controller")]//未解析，待解决
+    [Remote("Valid", "Home")]//未解析，待解决
     [Display(Name = "用户名")]
     public string UserName { get; set; }
 
@@ -97,6 +97,17 @@ public class TestViewModel
     [DataType("selectlist")]
     [Display(Name = "单选可选")]
     public string SelectList2 { get; set; }
+
+    [Display(Name = "子属性")]//????
+    public TestViewModel2 Sub { get; set; }
+
+    [Display(Name = "集合属性")]//????
+    public List<string> Values1 { get; set; } = new List<string> { "1", "2", "3" };
+
+    [Display(Name = "集合属性")]//????
+    public List<TestViewModel2> Values2 { get; set; } = new List<TestViewModel2> { new TestViewModel2(), new TestViewModel2() };
+
+
 }
 
 public enum TestEnum
@@ -106,4 +117,10 @@ public enum TestEnum
 
     [Display(Name = "枚举2")]
     Option2
+}
+
+public class TestViewModel2
+{
+    public int IntValue { get; set; }
+    public string StringValue { get; set; }
 }
