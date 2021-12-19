@@ -11,13 +11,22 @@
     <div id="app">
         <form :title="schema.title" method="post">
             <div v-for="(value,key,index) in schema.properties">
-                <label>{{value.title}}</label><input type="text" v-model="model[key]" @keyup="valid" />
+                <label :for="getId(key)">{{value.title}}</label><input type="text" :id="getId(key)" :name="getName(key)"
+                    v-model="model[key]" @keyup="valid(key)" />
             </div>
             <button type="submit">submit</button>
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@3.2.22/dist/vue.global.js"></script>
     <script>
+        const validator = {
+            validProp(schemaKey, modelKey) {
+
+            },
+            valid() {
+
+            }
+        };
     </script>
     <script>
         const app = Vue.createApp({
@@ -37,13 +46,22 @@
                 };
                 const model = Vue.reactive({
                     username: "admin",
-                    password: null
+                    password: null,
+                    errors: {
+                        username: [
+                            {
+                                required: "{0} is required"
+                            }
+                        ]
+                    }
                 });
                 return {
                     schema,
                     model,
-                    valid() {
-                        console.debug(model);
+                    getId(key) { return key; },
+                    getName(key) { return key; },
+                    valid(key) {
+                        console.debug(model[key]);
                     }
                 };
             }

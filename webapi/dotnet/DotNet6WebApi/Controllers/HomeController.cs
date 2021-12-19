@@ -11,12 +11,16 @@ namespace DotNet6WebApi.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(new TestViewModel());
+            return View();
         }
 
         [HttpPost]
         public IActionResult Index(TestViewModel model)
         {
+            if(!ModelState.IsValid)
+            {
+
+            }
             return View(model);
         }
 
