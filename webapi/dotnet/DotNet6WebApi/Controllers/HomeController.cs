@@ -28,7 +28,7 @@ namespace DotNet6WebApi.Controllers
         [HttpPost]
         public IActionResult Index(TestViewModel model)
         {
-            var errors = ModelState.Where(o => o.Value.ValidationState == ModelValidationState.Invalid).ToList();
+            var errors = ModelState.Where(o => o.Value.ValidationState == ModelValidationState.Invalid);
             var result = new
             {
                 schema = this.GetJsonSchema<TestViewModel>(),
