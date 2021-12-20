@@ -1,6 +1,10 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
@@ -20,7 +24,12 @@ builder.Services.AddCors(options =>
          .AllowCredentials();
      });
 });
-
+builder.Services.Configure<JsonOptions>(o =>
+{
+    o.SerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    o.SerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+});
+builder.Services.AddLocalization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

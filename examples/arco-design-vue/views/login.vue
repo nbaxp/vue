@@ -8,40 +8,32 @@ export default {
         const webapi = inject("webapi");
         const token = inject("token");
         const router = useRouter();
-        // const model = reactive({
-        //     username: null,
-        //     password: null,
-        // });
-        // const schema = {
-        //     type: "object",
-        //     properties: {
-        //         username: {
-        //             type: "string",
-        //             title: "用户名",
-        //         },
-        //         password: {
-        //             type: "string",
-        //             title: "密码",
-        //             format: "password",
-        //         },
-        //     },
-        //     title: "登录",
-        // };
-        const schema = {
-            title:"登录",
-            type:"object",
-            properties:{
-                username:{
-                    title:"用户名",
-                    type:"string",
-                    required:"必须填写{0}",
 
-                }
-            }
+        const model = reactive({
+            username: null,
+            password: null,
+        });
+        const schema = {
+            title: "登录",
+            type: "object",
+            properties: {
+                username: {
+                    title: "用户名",
+                    type: "string",
+                    required: "必须填写{0}",
+                },
+                password: {
+                    title: "用户名",
+                    type: "string",
+                    required: "必须填写{0}",
+                },
+            },
         };
+        const errors = ref([]);
         return {
-            //model,
+            model,
             schema,
+            errors,
             login() {
                 const url = `${location.protocol}//${location.host}/api/dotnet/token?username=admin`;
                 fetch(url, {
