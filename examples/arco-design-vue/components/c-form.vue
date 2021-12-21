@@ -1,15 +1,19 @@
 <template>
-    <h2>{{ schema.title }}</h2>
-    <template v-for="item in schema.properties">
-        <div>
-            <template v-if="item.oneOf">
-                <label>${{ item.title }}=>{{ item.oneOf }}</label>
+    <form>
+        <fieldset>
+            <legend>{{ schema.title }}</legend>
+            <template v-for="item in schema.properties">
+                <div>
+                    <template v-if="item.oneOf">
+                        <label>${{ item.title }}=>{{ item.oneOf }}</label>
+                    </template>
+                    <template v-else>
+                        <label>#{{ item.title }}:</label>
+                    </template>
+                </div>
             </template>
-            <template v-else>
-                <label>#{{ item.title }}:</label>
-            </template>
-        </div>
-    </template>
+        </fieldset>
+    </form>
 </template>
 <script>
 export default {

@@ -41,6 +41,27 @@ namespace DotNet6WebApi.Controllers
         }
 
         [HttpGet]
+        public IActionResult Type()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Type(TypeViewModel model)
+        {
+            var errors = ModelState.Where(o => o.Value.ValidationState == ModelValidationState.Invalid);
+            var result = new
+            {
+                schema = this.GetJsonSchema<TestViewModel>(),
+                model,
+                errors,
+                data = ViewData
+            };
+            var json = JsonSerializer.Serialize(result);
+            return View(model);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Valid(string userName)
         {
             await Task.Delay(10 * 1000);
