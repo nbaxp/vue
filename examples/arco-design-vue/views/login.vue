@@ -38,7 +38,7 @@ export default {
             schema,
             errors,
             login() {
-                const url = `${location.protocol}//${location.host}/api/dotnet/token?username=admin`;
+                const url = `${location.protocol}//${location.host}/api/dotnet/token`;
                 fetch(url, {
                     method: "POST",
                     credentials: "include",
