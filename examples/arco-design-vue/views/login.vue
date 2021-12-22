@@ -1,6 +1,8 @@
 <template>
-    <c-form :schema="schema"></c-form>
-    <a-button @click="login">Submit</a-button>
+    <c-layout layout="c-layout-user">
+        <c-form :schema="schema"></c-form>
+        <a-button @click="login">Submit</a-button>
+    </c-layout>
 </template>
 <script>
 export default {
@@ -31,6 +33,7 @@ export default {
         };
         const errors = ref([]);
         return {
+            title: "登录",
             model,
             schema,
             errors,

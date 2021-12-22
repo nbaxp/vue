@@ -60,3 +60,9 @@
 1. <https://caniuse.com/>
 1. <https://docs.microsoft.com/zh-cn/azure/active-directory/develop/v2-oauth2-auth-code-flow>
 1. <https://json-schema.apifox.cn/>
+
+## 思路
+
+1.页面加载时，layout 组件加载并实例化，后端通过 websocket 在网站或用户信息发生变动时，推送更新到前端，前端更新 layout 组件的 model。
+
+2.用户登录后，通过更新 layout 组件的 model 更新菜单。

@@ -1,4 +1,4 @@
-function LocalStorageGetOrAddItem(key, value) {
+function GetOrAddLocalStorageItem(key, value) {
     let item = localStorage.getItem(key);
     if (!item) {
         localStorage.setItem(key, value);
@@ -7,8 +7,7 @@ function LocalStorageGetOrAddItem(key, value) {
     return item;
 }
 
-function LocalStorageUpdateItem(key, value) {
+function UpdateLocalStorageItem(key, value) {
     localStorage.setItem(key, value);
-    const item = localStorage.getItem(key);
-    return item;
+    return localStorage.getItem(key);
 }

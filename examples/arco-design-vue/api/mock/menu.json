@@ -5,6 +5,10 @@
         "icon": "icon-home"
     },
     {
+        "path": "/404",
+        "name": "404"
+    },
+    {
         "path": "/dashboard",
         "name": "仪表盘",
         "icon": "icon-dashboard",
