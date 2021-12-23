@@ -158,7 +158,7 @@ app.UseAuthorization();
 using var scope = app.Services.CreateScope();
 
 app.UseRequestLocalization(scope.ServiceProvider.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);//必须在UseEndpoints前
-app.UseEndpoints(endpoints =>
+app.UseEndpoints(endpoints =>//MapDynamicControllerRoute
 {
     //endpoints.MapControllerRoute(//error
     //    name: "areaCultureRoute",

@@ -36,6 +36,11 @@ namespace DotNet6WebApi.Controllers
             return View();
         }
 
+        public IActionResult Locale(string returnUrl)
+        {
+            return View(model:returnUrl);
+        }
+
         [HttpPost]
         public IActionResult Index(TestViewModel model)
         {
