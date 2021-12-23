@@ -5,11 +5,5 @@
     "editor.codeActionsOnSave": {
         "source.fixall.eslint": true
     },
-    "eslint.validate": ["javascript", "vue"],
-    "[ignore]": {
-        "editor.defaultFormatter": "foxundermoon.shell-format"
-    },
-    "[shellscript]": {
-        "editor.defaultFormatter": "foxundermoon.shell-format"
-    }
+    "eslint.validate": ["javascript", "vue"]
 }

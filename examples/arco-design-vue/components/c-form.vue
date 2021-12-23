@@ -1,5 +1,5 @@
 <template>
-    <form>
+    <a-form>
         <fieldset>
             <legend>{{ schema.title }}</legend>
             <template v-for="item in schema.properties">
@@ -13,7 +13,7 @@
                 </div>
             </template>
         </fieldset>
-    </form>
+    </a-form>
 </template>
 <script>
 export default {

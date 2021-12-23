@@ -14,26 +14,8 @@ window.useRouter = VueRouter.useRouter;
 window.useRoute = VueRouter.useRoute;
 
 const app = createApp({
-    setup() {
+    setup(props, context) {
         const router = useRouter();
-        
-
-        //theme
-        const theme = reactive({
-            current: GetOrAddLocalStorageItem('theme', 'light'),
-            items: ['light', 'dark']
-        });
-        provide('theme', theme);
-        theme.change = o => {
-            theme.current = UpdateLocalStorageItem('theme', o);
-            if (theme.current === 'dark') {
-                document.body.setAttribute("arco-theme", "dark");
-            } else {
-                document.body.removeAttribute("arco-theme");
-            }
-        };
-        theme.change(theme.current);
-
         //token
         const token = reactive({
             access_token: null,

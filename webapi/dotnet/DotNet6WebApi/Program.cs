@@ -1,10 +1,15 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
+using DotNet6WebApi.Resources;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
@@ -14,6 +19,7 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 var origins = "AllowAllHeaders";
 
+builder.Services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(origins, builder =>
@@ -29,7 +35,6 @@ builder.Services.Configure<JsonOptions>(o =>
     o.SerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     o.SerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
 });
-builder.Services.AddLocalization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -84,7 +89,29 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerPostConfigureOptions>());
 builder.Services.AddSingleton(new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature));
-builder.Services.AddControllersWithViews();
+builder.Services.AddLocalization(o => o.ResourcesPath = null!);
+builder.Services.AddMvc()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+    .AddDataAnnotationsLocalization(options =>
+    {
+        options.DataAnnotationLocalizerProvider = (type, factory) =>
+        {
+            var localizer = factory.Create("Resources.Resource", typeof(Resource).Assembly.GetName().Name!);
+            return localizer;
+        };
+    });
+var defaultCulture = "zh-CN";
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] {
+        new CultureInfo("en-US"),
+        new CultureInfo("zh-CN"),
+    };
+    options.DefaultRequestCulture = new RequestCulture(defaultCulture);
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+    options.RequestCultureProviders.Insert(0, new RouteDataRequestCultureProvider { Options = options });
+});
 builder.Services.AddSignalR()
     .AddStackExchangeRedis(builder.Configuration.GetConnectionString("redis.signalr"), o => o.Configuration.ChannelPrefix = "signalr");
 
@@ -127,20 +154,33 @@ app.UseRouting();
 app.UseCors(origins);
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+using var scope = app.Services.CreateScope();
+
+app.UseRequestLocalization(scope.ServiceProvider.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);//必须在UseEndpoints前
 app.UseEndpoints(endpoints =>
 {
+    //endpoints.MapControllerRoute(//error
+    //    name: "areaCultureRoute",
+    //    pattern: "{culture}/{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapControllerRoute(
+        name: "cultureRoute",
+        pattern: "{culture}/{controller=Home}/{action=Index}/{id?}");
+    //endpoints.MapControllerRoute(//error
+    //    name: "areaRoute",
+    //    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
     endpoints.MapHub<TestHub>("/hub");
 });
-using var scope = app.Services.CreateScope();
-using var db = scope.ServiceProvider.GetRequiredService<DbContext>();
 
+using var db = scope.ServiceProvider.GetRequiredService<DbContext>();
 if (db.Database.EnsureCreated())
 {
     //db.Seed();
     db.Set<User>().Add(new User { UserName = "admin" });
     db.SaveChanges();
 }
+
 app.Run();

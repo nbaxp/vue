@@ -18,7 +18,7 @@ public class TestViewModel
     [Display(Name = "用户名")]
     public string UserName { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = nameof(RequiredAttribute))]
     [DataType(DataType.Password)]//已扩展到format
     [Display(Name = "密码")]
     public string Password { get; set; }
@@ -37,7 +37,7 @@ public class TestViewModel
     [Display(Name = "可编辑")]
     public string Editable { get; set; }
 
-    [Range(typeof(int),"1", "3")]
+    [Range(typeof(int), "1", "3")]
     [Display(Name = "整数范围必选")]
     public int Range1 { get; set; }
 
@@ -106,8 +106,6 @@ public class TestViewModel
 
     [Display(Name = "集合属性")]//????
     public List<TestViewModel2> Values2 { get; set; } = new List<TestViewModel2> { new TestViewModel2(), new TestViewModel2() };
-
-
 }
 
 public enum TestEnum

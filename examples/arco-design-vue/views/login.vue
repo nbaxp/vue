@@ -10,7 +10,7 @@ export default {
         const webapi = inject("webapi");
         const token = inject("token");
         const router = useRouter();
-
+        inject("site").title = "登录";
         const model = reactive({
             username: null,
             password: null,
