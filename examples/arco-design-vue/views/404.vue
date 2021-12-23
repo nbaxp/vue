@@ -1,10 +1,5 @@
 <template>
-    <h1>404</h1>
+  <c-layout layout="c-layout-user">
+    <h1 style="text-align: center">404</h1>
+  </c-layout>
 </template>
-<script>
-export default {
-    setup() {
-        inject("layout").value = "c-layout-user";
-    },
-};
-</script>

@@ -46,9 +46,9 @@ export default {
         );
         provide("site", site);
         const user = reactive({
-            username:null
+            username: null,
         });
-        provide("user",user);
+        provide("user", user);
         //return
         return {
             locale,
@@ -103,11 +103,5 @@ a {
     justify-content: space-between;
     height: 60px;
     padding: 0 12px;
-}
-
-.arco-layout-footer {
-    justify-content: space-between;
-    border-top: 1px solid var(--color-border);
-    padding: 12px;
 }
 </style>
