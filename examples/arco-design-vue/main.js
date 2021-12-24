@@ -1,3 +1,5 @@
+import zhCN from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/locale/lang/zh-cn.js";
+import enUS from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/locale/lang/en-us.js";
 const createApp = Vue.createApp;
 const createRouter = VueRouter.createRouter;
 const createWebHistory = VueRouter.createWebHistory;
@@ -12,9 +14,36 @@ window.provide = Vue.provide;
 window.inject = Vue.inject;
 window.useRouter = VueRouter.useRouter;
 window.useRoute = VueRouter.useRoute;
-
+///locale
+//加载服务端locales
+const locales = await (await fetch("/api/dotnet/api/site/locale")).json();
+//获取本地缓存的locale
+var currentLocale = localStorage.getItem("locale");
+if (!currentLocale) {//不存在缓存，设置当前locale为缓存
+    currentLocale = locales.current;
+    localStorage.setItem("locale", currentLocale);
+}
+else {//存在缓存
+    if (locales.items.find(o => o.name === currentLocale)) {//缓存的locale存在，更改当前的locale为缓存的locale
+        locales.current = currentLocale;
+    }
+    else {//缓存的locale不存在，设置当前locale为缓存
+        localStorage.setItem("locale", locales.current);
+    }
+}
 const app = createApp({
     setup(props, context) {
+        //locale
+        const locale = reactive({
+            current: locales.current,
+            items: locales.items,
+            components: new Map([["zh-CN", zhCN], ["en-US", enUS]])
+        });
+        locale.getCurrentComponent = () => locale.components.get(locale.current);
+        locale.getNativeName = o => locale.items.find(l => l.name === o).nativeName;
+        locale.change = o => localStorage.setItem("locale", locale.current = o);
+        provide("locale", locale);
+        //router
         const router = useRouter();
         //token
         const token = reactive({

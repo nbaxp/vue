@@ -1,36 +1,13 @@
 <template>
-    <a-config-provider :locale="locale.items.get(locale.current)">
+    <a-config-provider :locale="locale.getCurrentComponent()">
         <slot></slot>
     </a-config-provider>
 </template>
 <script>
-import zhCN from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/locale/lang/zh-cn.js";
-import enUS from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/locale/lang/en-us.js";
-
 export default {
     props: ["api"],
     setup(props) {
-        const locales = new Map([
-            ["zh-CN", zhCN],
-            ["en-US", enUS],
-        ]);
-        //locale
-        const locale = reactive({
-            locales,
-            current: GetOrAddLocalStorageItem("locale", "简体中文"),
-            items: new Map([
-                ["简体中文", zhCN],
-                ["English", enUS],
-            ]),
-            // items: [
-            //     { name: "zh-CN", nativeName: "简体中文", component: zhCN },
-            //     { name: "en-US", nativeName: "English", component: enUS },
-            // ],
-        });
-        locale.change = (o) => {
-            locale.current = UpdateLocalStorageItem("locale", o);
-        };
-        provide("locale", locale);
+        const locale = inject("locale");
         onMounted(async () => {
             var response = await fetch("/api/dotnet/api/site/locale");
             var result = await response.json();

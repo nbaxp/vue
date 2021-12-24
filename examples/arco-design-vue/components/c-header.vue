@@ -22,10 +22,10 @@
             ></c-icon>
         </a-button>
         <a-dropdown trigger="hover" @select="locale.change">
-            <a-button>{{ locale.current }}</a-button>
+            <a-button>{{ locale.getNativeName(locale.current) }}</a-button>
             <template #content>
-                <a-doption v-for="item in locale.items" :key="item[0]">{{
-                    item[0]
+                <a-doption v-for="item in locale.items" :value="item.name">{{
+                    item.nativeName
                 }}</a-doption>
             </template>
         </a-dropdown>
