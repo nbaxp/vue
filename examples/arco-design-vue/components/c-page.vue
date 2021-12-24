@@ -10,7 +10,27 @@ import enUS from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/loc
 export default {
     props: ["api"],
     setup(props) {
-        //let locale2 = reactive({})
+        const locales = new Map([
+            ["zh-CN", zhCN],
+            ["en-US", enUS],
+        ]);
+        //locale
+        const locale = reactive({
+            locales,
+            current: GetOrAddLocalStorageItem("locale", "简体中文"),
+            items: new Map([
+                ["简体中文", zhCN],
+                ["English", enUS],
+            ]),
+            // items: [
+            //     { name: "zh-CN", nativeName: "简体中文", component: zhCN },
+            //     { name: "en-US", nativeName: "English", component: enUS },
+            // ],
+        });
+        locale.change = (o) => {
+            locale.current = UpdateLocalStorageItem("locale", o);
+        };
+        provide("locale", locale);
         onMounted(async () => {
             var response = await fetch("/api/dotnet/api/site/locale");
             var result = await response.json();
@@ -40,22 +60,6 @@ export default {
             return `api/${webapi.current}/${o}`;
         };
         provide("webapi", webapi);
-        //locale
-        const locale = reactive({
-            current: GetOrAddLocalStorageItem("locale", "简体中文"),
-            items: new Map([
-                ["简体中文", zhCN],
-                ["English", enUS],
-            ]),
-            // items: [
-            //     { name: "zh-CN", nativeName: "简体中文", component: zhCN },
-            //     { name: "en-US", nativeName: "English", component: enUS },
-            // ],
-        });
-        locale.change = (o) => {
-            locale.current = UpdateLocalStorageItem("locale", o);
-        };
-        provide("locale", locale);
         //site
         const site = reactive({
             title: "Html Title",
