@@ -27,12 +27,8 @@ namespace DotNet6WebApi.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            string header = Request.Headers.AcceptLanguage.ToString();
-            var languages = header.Split(',')
-                .Select(StringWithQualityHeaderValue.Parse)
-                .OrderByDescending(s => s.Quality.GetValueOrDefault(1)).FirstOrDefault();
             ViewBag.Test = $"{CultureInfo.CurrentCulture.Name}/{CultureInfo.CurrentCulture.NativeName}:{_localizer["RequiredAttribute"]}";
-            var rc = HttpContext.Features.Get<IRequestCultureFeature>();
+            var cultrurName = HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name;
             return View();
         }
 

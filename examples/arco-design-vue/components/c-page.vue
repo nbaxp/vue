@@ -8,7 +8,29 @@ import zhCN from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/loc
 import enUS from "https://cdn.jsdelivr.net/npm/@arco-design/web-vue@2.3.0/es/locale/lang/en-us.js";
 
 export default {
-    setup() {
+    props: ["api"],
+    setup(props) {
+        //let locale2 = reactive({})
+        onMounted(async () => {
+            var response = await fetch("/api/dotnet/api/site/locale");
+            var result = await response.json();
+            console.log(result);
+        });
+        //theme
+        const theme = reactive({
+            current: GetOrAddLocalStorageItem("theme", "light"),
+            items: ["light", "dark"],
+        });
+        theme.change = (o) => {
+            theme.current = UpdateLocalStorageItem("theme", o);
+            if (theme.current === "dark") {
+                document.body.setAttribute("arco-theme", "dark");
+            } else {
+                document.body.removeAttribute("arco-theme");
+            }
+        };
+        theme.change(theme.current);
+        provide("theme", theme);
         //webapi
         const webapi = reactive({
             current: GetOrAddLocalStorageItem("webapi", "mock"),
@@ -25,6 +47,10 @@ export default {
                 ["简体中文", zhCN],
                 ["English", enUS],
             ]),
+            // items: [
+            //     { name: "zh-CN", nativeName: "简体中文", component: zhCN },
+            //     { name: "en-US", nativeName: "English", component: enUS },
+            // ],
         });
         locale.change = (o) => {
             locale.current = UpdateLocalStorageItem("locale", o);
@@ -49,6 +75,9 @@ export default {
             username: null,
         });
         provide("user", user);
+        //test start
+        //var url =
+        //test end
         //return
         return {
             locale,

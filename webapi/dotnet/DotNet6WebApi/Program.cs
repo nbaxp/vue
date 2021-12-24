@@ -110,7 +110,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.DefaultRequestCulture = new RequestCulture(defaultCulture);
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
-    options.RequestCultureProviders.Insert(0, new RouteDataRequestCultureProvider { Options = options });
+    //RouteDataRequestCultureProvider不能使用options作为初始化参数，否则RouteAttribute路由的locale无效
+    options.RequestCultureProviders.Insert(0, new RouteDataRequestCultureProvider());
 });
 builder.Services.AddSignalR()
     .AddStackExchangeRedis(builder.Configuration.GetConnectionString("redis.signalr"), o => o.Configuration.ChannelPrefix = "signalr");
@@ -160,19 +161,14 @@ using var scope = app.Services.CreateScope();
 app.UseRequestLocalization(scope.ServiceProvider.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);//必须在UseEndpoints前
 app.UseEndpoints(endpoints =>//MapDynamicControllerRoute
 {
-    //endpoints.MapControllerRoute(//error
-    //    name: "areaCultureRoute",
-    //    pattern: "{culture}/{area:exists}/{controller=Home}/{action=Index}/{id?}");
-    endpoints.MapControllerRoute(
+    endpoints.MapControllerRoute(//必须在前面否则url的culture部分会变成参数而不是路径
         name: "cultureRoute",
         pattern: "{culture}/{controller=Home}/{action=Index}/{id?}");
-    //endpoints.MapControllerRoute(//error
-    //    name: "areaRoute",
-    //    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
     endpoints.MapHub<TestHub>("/hub");
+    endpoints.MapSwagger();
 });
 
 using var db = scope.ServiceProvider.GetRequiredService<DbContext>();

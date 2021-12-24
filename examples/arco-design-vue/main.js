@@ -81,8 +81,9 @@ const app = createApp({
         };
         provide('token', token);
         onMounted(async () => {
+            //const locale = fetch()
             window.addEventListener('storage', logout);
-            //load
+            //token
             console.debug('会话开始，尝试刷新token');
             if (await token.refresh()) {
                 console.debug('刷新成功，开始定时刷新token');
@@ -98,8 +99,6 @@ const app = createApp({
             window.removeEventListener('storage', logout);
             window.localStorage.removeItem('logout');
         });
-        //return
-        return {};
     }
 });
 app.config.compilerOptions.isCustomElement = tag => tag.startsWith('ion-');

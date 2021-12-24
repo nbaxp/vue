@@ -66,3 +66,43 @@
 1.页面加载时，layout 组件加载并实例化，后端通过 websocket 在网站或用户信息发生变动时，推送更新到前端，前端更新 layout 组件的 model。
 
 2.用户登录后，通过更新 layout 组件的 model 更新菜单。
+
+## 国际化
+
+服务端需要根据请求返回支持的语言列表和当前的语言，如果当前请求的语言不在支持的列表中，则会返回默认的语言。前端不应该设置默认的语言，后端会返回当前的语言。如果前端设置的默认语言和浏览器的默认语言不一致，会导致服务端返回的资源不匹配当前的语言。
+
+### 前端
+
+1. 前端发送请求到服务端获取语言列表和当前语言
+1. 前端存储当前语言到 localStorage 并设置前端组件的当前语言
+1. 前端发送请求时，添加当前语言到 url 的 locale 部分
+1. 前端以下拉列表方式切换语言时，存储当前语言到 localStorage 并根据当前页面地址刷新网页
+1. 如果语言过多，可以在切换语言时跳转到新页面，选择语言后再跳转回原页面
+
+### 后端
+
+1. 后端根据请求自动判断语言，提供 API 供前端获取语言列表和当前语言
+
+## token
+
+默认使用 jwt
+
+### 前端
+
+前端不持久化 access token ；refresh token 只能通过服务端以 http only 的 cooke 方式写入，此 cookie 的 path 只能为刷新 token 的 url。
+
+参考： <https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps>
+
+1. 前端初始化时，访问服务端刷新 access token，成功则以变量形式在内存中存储，失败则跳转到登录
+1. 前端登录成功后，设置定时器定时刷新 access token ，失败则跳转到登录
+1. 前端登录或刷新 token 成功时，响应结果格式相同，refresh token 都会刷新
+1. refresh token 以服务端设置 cookie 的方式存储，cookie 的 path 为刷新 token 的 path，且 cookie 为 http only
+1. 退出登录时，请求服务端销毁 refresh token 的 cookie
+1. 前端通过监听 storage 事件的方式，实现在退出登录时清空所有浏览器所有 tab 页的 access token
+1. 可以通过在服务端存储已注销且未过期的 access token 的方式防止 access token 的盗用
+
+### 后端
+
+1. 后端需要有 login、logout、refresh 三个接口，分别用于登录、登出和刷新
+1. login 接口需要验证用户，refresh 接口需要验证 refresh token
+1. login 接口和 refresh 接口成功时通过服务端将 refresh token 已 http only 的方式写入 cookie，cookie 的 path 必须设置为 refresh 的 path
