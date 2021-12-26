@@ -9,3 +9,5 @@
 !**/packages/build/
 *.nuget.props
 *.nuget.targets
+*.db-shm
+*.db-wal
