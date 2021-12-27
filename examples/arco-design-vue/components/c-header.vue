@@ -13,6 +13,22 @@
                 item
             }}</a-option>
         </a-select>
+        <a-dropdown @select="locale.change" trigger="hover">
+            <a-button type="text" class="c-dropdown-btn"
+                >{{ locale.getNativeName(locale.current)
+                }}<c-icon
+                    :name="localeListVisible ? 'icon-up' : 'icon-down'"
+                ></c-icon
+            ></a-button>
+            <template #content>
+                <a-doption
+                    v-for="item in locale.items"
+                    :value="item.name"
+                    :class="locale.current === item.name ? 'current' : ''"
+                    >{{ item.nativeName }}</a-doption
+                >
+            </template>
+        </a-dropdown>
         <a-button
             shape="circle"
             @click="theme.change(theme.current == 'light' ? 'dark' : 'light')"
@@ -21,14 +37,6 @@
                 :name="theme.current === 'dark' ? 'icon-moon' : 'icon-sun'"
             ></c-icon>
         </a-button>
-        <a-dropdown trigger="hover" @select="locale.change">
-            <a-button>{{ locale.getNativeName(locale.current) }}</a-button>
-            <template #content>
-                <a-doption v-for="item in locale.items" :value="item.name">{{
-                    item.nativeName
-                }}</a-doption>
-            </template>
-        </a-dropdown>
         <a-dropdown v-if="user" trigger="hover">
             <a-button>
                 <c-icon :name="user.icon"></c-icon> {{ user.name }}
@@ -51,10 +59,12 @@ export default {
     setup() {
         const webapi = inject("webapi");
         const locale = inject("locale");
+        const localeListVisible = ref(false);
         const theme = inject("theme");
         return {
             webapi,
             locale,
+            localeListVisible,
             theme,
         };
     },
@@ -74,5 +84,10 @@ export default {
     line-height: 1.4;
     font-size: 18px;
     color: var(--color-text-1);
+}
+.c-dropdown-btn,
+.c-dropdown-btn:hover {
+    color: var(--color-text-1);
+    background-color: transparent;
 }
 </style>

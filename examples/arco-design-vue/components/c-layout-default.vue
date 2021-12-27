@@ -1,6 +1,6 @@
 <template>
     <a-layout class="c-container">
-        <a-layout-header>
+        <a-layout-header class="c-header">
             <c-header v-model="site"></c-header>
         </a-layout-header>
         <a-layout class="c-body">

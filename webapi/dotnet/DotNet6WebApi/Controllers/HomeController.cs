@@ -49,7 +49,7 @@ namespace DotNet6WebApi.Controllers
                 data = ViewData
             };
             var json = JsonSerializer.Serialize(result);
-            Response.Cookies.Append(".AspNetCore.Culture", "c=en-US|uic=en-US");
+            //Response.Cookies.Append(".AspNetCore.Culture", "c=en-US|uic=en-US");
             return View(model);
         }
 

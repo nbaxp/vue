@@ -6,6 +6,9 @@
         culture = CultureInfo.CurrentCulture.Name,
         returnUrl = this.Context.Request.Path };
 }
+<div>
+    @ViewBag.Test
+</div>
 <div><a href="@Url.Action("Locale","Home",routes)">@CultureInfo.CurrentCulture.NativeName</a></div>
 <form asp-controller="Home" asp-action="Index" method="post">
     @Html.ValidationSummary()

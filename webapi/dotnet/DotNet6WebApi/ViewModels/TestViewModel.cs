@@ -13,12 +13,12 @@ public class TestViewModel
     [RegularExpression("[a-zA-Z0-9_]+")]
     [UIHint("UserNameUI")]//已扩展到format
     [DataType("custom")]//已扩展到format
-    [Required(ErrorMessage = "必须填写用户名")]//ErrorMessage未解析，待解决
+    [Required]
     [Remote("Valid", "Home")]//未解析，待解决
     [Display(Name = "用户名")]
     public string UserName { get; set; }
 
-    [Required(ErrorMessage = nameof(RequiredAttribute))]
+    [Required]
     [DataType(DataType.Password)]//已扩展到format
     [Display(Name = "密码")]
     public string Password { get; set; }
