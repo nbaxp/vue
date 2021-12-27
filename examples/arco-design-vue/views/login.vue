@@ -1,5 +1,6 @@
 <template>
     <c-layout layout="c-layout-user">
+        <h2>{{ $t("message.home") }}</h2>
         <c-form :schema="schema"></c-form>
         <a-button @click="login">Submit</a-button>
     </c-layout>

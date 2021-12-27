@@ -14,6 +14,7 @@ window.provide = Vue.provide;
 window.inject = Vue.inject;
 window.useRouter = VueRouter.useRouter;
 window.useRoute = VueRouter.useRoute;
+window.createI18n = VueI18n.createI18n;
 ///locale
 //加载服务端locales
 const locales = await (await fetch("/api/dotnet/api/site/locale")).json();
@@ -31,17 +32,40 @@ else {//存在缓存
         localStorage.setItem("locale", locales.current);
     }
 }
+//https://vue-i18n.intlify.dev/guide/essentials/scope.html#local-scope-1
+const i18n = createI18n({
+    locale: locales.current,
+    fallbackLocale: "zh-CN",
+    messages: {
+        "zh-CN": {
+            message: {
+                home: "首页"
+            }
+        },
+        "en-US": {
+            message: {
+                home: "home"
+            }
+        }
+    }
+});
+const locale = reactive({
+    current: locales.current,
+    items: locales.items,
+    components: new Map([["zh-CN", zhCN], ["en-US", enUS]]),
+    i18n,
+});
+
+locale.getCurrentComponent = () => locale.components.get(locale.current);
+locale.getNativeName = o => locale.items.find(l => l.name === o).nativeName;
+locale.change = o => {
+    locale.current = o;
+    localStorage.setItem("locale", locale.current);
+    locale.i18n.global.locale = locale.current;
+};
 const app = createApp({
     setup(props, context) {
         //locale
-        const locale = reactive({
-            current: locales.current,
-            items: locales.items,
-            components: new Map([["zh-CN", zhCN], ["en-US", enUS]])
-        });
-        locale.getCurrentComponent = () => locale.components.get(locale.current);
-        locale.getNativeName = o => locale.items.find(l => l.name === o).nativeName;
-        locale.change = o => localStorage.setItem("locale", locale.current = o);
         provide("locale", locale);
         //router
         const router = useRouter();
@@ -130,6 +154,7 @@ const app = createApp({
         });
     }
 });
+window.app = app;
 app.config.compilerOptions.isCustomElement = tag => tag.startsWith('ion-');
 
 const router = new createRouter({
@@ -143,8 +168,9 @@ const router = new createRouter({
         // }
     ],
 });
+app.use(i18n);
 app.use(router);
-
+//Vue.use(createI18n);
 app.use(ArcoVue);
 app.use(ArcoVueIcon);
 
