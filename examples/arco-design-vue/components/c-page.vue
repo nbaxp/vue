@@ -19,7 +19,7 @@ export default {
             items: ["light", "dark", "system"],
         });
         const mql = window.matchMedia("(prefers-color-scheme: dark)");
-        mql.addEventListener("change", () => {
+        mql.addEventListener("change", (e) => {
             if (theme.current === "system") {
                 if (e.matches) {
                     document.body.setAttribute("arco-theme", "dark");
