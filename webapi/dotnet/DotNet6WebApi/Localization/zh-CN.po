@@ -1,1 +1,2 @@
-﻿msgid 
+﻿msgid "RequiredAttribute"
+msgstr "必须输入 {0}"

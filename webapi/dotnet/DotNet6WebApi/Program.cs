@@ -91,8 +91,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerPostConfigureOptions>());
 builder.Services.AddSingleton(new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature));
 builder.Services.AddSingleton<IValidationAttributeAdapterProvider, LocalizedValidationAttributeAdapterProvider>();
-builder.Services.AddLocalization(o => o.ResourcesPath = null!);
-//builder.Services.AddPortableObjectLocalization(o=>o.ResourcesPath = "Localization"!);
+//builder.Services.AddLocalization(o => o.ResourcesPath = null!);
+builder.Services.AddPortableObjectLocalization(o=>o.ResourcesPath = "Localization");
 builder.Services.AddMvc()
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
     .AddDataAnnotationsLocalization(options =>
