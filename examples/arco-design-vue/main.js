@@ -39,11 +39,21 @@ const i18n = createI18n({
     messages: {
         "zh-CN": {
             message: {
+                theme: {
+                    light: "亮色模式",
+                    dark: "暗黑模式",
+                    system: "跟随系统"
+                },
                 home: "首页"
             }
         },
         "en-US": {
             message: {
+                theme: {
+                    light: "Light Mode",
+                    dark: "Dar Mode",
+                    system: "System theme"
+                },
                 home: "home"
             }
         }

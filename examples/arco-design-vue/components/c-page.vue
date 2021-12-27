@@ -16,14 +16,30 @@ export default {
         //theme
         const theme = reactive({
             current: GetOrAddLocalStorageItem("theme", "light"),
-            items: ["light", "dark"],
+            items: ["light", "dark", "system"],
+        });
+        const mql = window.matchMedia("(prefers-color-scheme: dark)");
+        mql.addEventListener("change", () => {
+            if (theme.current === "system") {
+                if (e.matches) {
+                    document.body.setAttribute("arco-theme", "dark");
+                } else {
+                    document.body.removeAttribute("arco-theme");
+                }
+            }
         });
         theme.change = (o) => {
             theme.current = UpdateLocalStorageItem("theme", o);
             if (theme.current === "dark") {
                 document.body.setAttribute("arco-theme", "dark");
-            } else {
+            } else if (theme.current === "light") {
                 document.body.removeAttribute("arco-theme");
+            } else if (theme.current === "system") {
+                if (window.matchMedia("prefers-color-scheme: dark").matches) {
+                    document.body.setAttribute("arco-theme", "dark");
+                } else {
+                    document.body.removeAttribute("arco-theme");
+                }
             }
         };
         theme.change(theme.current);

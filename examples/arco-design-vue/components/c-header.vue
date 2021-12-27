@@ -29,6 +29,22 @@
                 >
             </template>
         </a-dropdown>
+        <a-dropdown @select="theme.change" trigger="hover">
+            <a-button type="text" class="c-dropdown-btn"
+                >{{ $t("message.theme." + theme.current)
+                }}<c-icon
+                    :name="localeListVisible ? 'icon-up' : 'icon-down'"
+                ></c-icon
+            ></a-button>
+            <template #content>
+                <a-doption
+                    v-for="item in theme.items"
+                    :value="item"
+                    :class="theme.current === item ? 'current' : ''"
+                    >{{ $t("message.theme." + item) }}</a-doption
+                >
+            </template>
+        </a-dropdown>
         <a-button
             shape="circle"
             @click="theme.change(theme.current == 'light' ? 'dark' : 'light')"

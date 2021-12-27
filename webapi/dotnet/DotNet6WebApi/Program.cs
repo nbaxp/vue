@@ -103,14 +103,13 @@ builder.Services.AddMvc()
             return localizer;
         };
     });
-var defaultCulture = "zh-CN";
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     var supportedCultures = new[] {
-        new CultureInfo("en-US"),
         new CultureInfo("zh-CN"),
+        new CultureInfo("en-US"),
     };
-    options.DefaultRequestCulture = new RequestCulture(defaultCulture);
+    options.DefaultRequestCulture = new RequestCulture("en-US");
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
     //RouteDataRequestCultureProvider不能使用options作为初始化参数，否则RouteAttribute路由的locale无效
