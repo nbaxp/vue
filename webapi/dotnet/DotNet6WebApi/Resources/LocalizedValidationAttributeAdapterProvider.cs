@@ -13,6 +13,7 @@ public class LocalizedValidationAttributeAdapterProvider : IValidationAttributeA
         if(string.IsNullOrEmpty(attribute.ErrorMessage))
         {
             attribute.ErrorMessage = attribute.GetType().Name;
+            System.Diagnostics.Debug.WriteLine(attribute.ErrorMessage);
         }
         return _originalProvider.GetAttributeAdapter(attribute, stringLocalizer);
     }

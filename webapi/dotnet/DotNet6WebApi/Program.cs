@@ -1,15 +1,18 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
+using DotNet6WebApi;
 using DotNet6WebApi.Resources;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -91,29 +94,27 @@ builder.Services.AddAuthentication(options =>
 builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerPostConfigureOptions>());
 builder.Services.AddSingleton(new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature));
 builder.Services.AddSingleton<IValidationAttributeAdapterProvider, LocalizedValidationAttributeAdapterProvider>();
-builder.Services.AddLocalization(o => o.ResourcesPath = null!);
-//builder.Services.AddPortableObjectLocalization(o=>o.ResourcesPath = "Localization");
-builder.Services.AddMvc(o => {
-    var temp = o.ModelBindingMessageProvider.GetType().Name;
-})
+//builder.Services.AddLocalization();
+builder.Services.AddPortableObjectLocalization(o=>o.ResourcesPath = "Localization");
+builder.Services.AddMvc(o=>o.ModelMetadataDetailsProviders.Insert(0,new CustomIDisplayMetadataProvider()))
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
     .AddDataAnnotationsLocalization(options =>
     {
         options.DataAnnotationLocalizerProvider = (type, factory) =>
         {
-            var localizer = factory.Create("Resources.Resource", typeof(Resource).Assembly.GetName().Name!);
+            var localizer = factory.Create(typeof(Resource));
             return localizer;
         };
     });
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-   var supportedCultures = new[] {
+    var supportedCultures = new[] {
         new CultureInfo("zh-CN"),
         new CultureInfo("en-US"),
    };
-   options.DefaultRequestCulture = new RequestCulture("en-US");
-   options.SupportedCultures = supportedCultures;
-   options.SupportedUICultures = supportedCultures;
+    options.DefaultRequestCulture = new RequestCulture("en-US");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
     //RouteDataRequestCultureProvider不能使用options作为初始化参数，否则RouteAttribute路由的locale无效
     options.RequestCultureProviders.Insert(0, new RouteDataRequestCultureProvider());
 });
@@ -183,4 +184,16 @@ if (db.Database.EnsureCreated())
     db.SaveChanges();
 }
 
-app.Run(); 
+app.Run();
+
+public class CustomIDisplayMetadataProvider : IDisplayMetadataProvider
+{
+    public void CreateDisplayMetadata(DisplayMetadataProviderContext context){
+        var attributes = context.Attributes;
+        var displayAttribute = attributes.OfType<DisplayAttribute>().FirstOrDefault();
+        if(displayAttribute!=null&&string.IsNullOrEmpty(displayAttribute.Name))
+        {
+            displayAttribute.Name = context.Key.Name;
+        }
+    }
+}
