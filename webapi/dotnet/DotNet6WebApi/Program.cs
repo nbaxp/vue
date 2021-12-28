@@ -91,9 +91,11 @@ builder.Services.AddAuthentication(options =>
 builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerPostConfigureOptions>());
 builder.Services.AddSingleton(new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature));
 builder.Services.AddSingleton<IValidationAttributeAdapterProvider, LocalizedValidationAttributeAdapterProvider>();
-//builder.Services.AddLocalization(o => o.ResourcesPath = null!);
-builder.Services.AddPortableObjectLocalization(o=>o.ResourcesPath = "Localization");
-builder.Services.AddMvc()
+builder.Services.AddLocalization(o => o.ResourcesPath = null!);
+//builder.Services.AddPortableObjectLocalization(o=>o.ResourcesPath = "Localization");
+builder.Services.AddMvc(o => {
+    var temp = o.ModelBindingMessageProvider.GetType().Name;
+})
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
     .AddDataAnnotationsLocalization(options =>
     {
@@ -105,13 +107,13 @@ builder.Services.AddMvc()
     });
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-    var supportedCultures = new[] {
+   var supportedCultures = new[] {
         new CultureInfo("zh-CN"),
         new CultureInfo("en-US"),
-    };
-    options.DefaultRequestCulture = new RequestCulture("en-US");
-    options.SupportedCultures = supportedCultures;
-    options.SupportedUICultures = supportedCultures;
+   };
+   options.DefaultRequestCulture = new RequestCulture("en-US");
+   options.SupportedCultures = supportedCultures;
+   options.SupportedUICultures = supportedCultures;
     //RouteDataRequestCultureProvider不能使用options作为初始化参数，否则RouteAttribute路由的locale无效
     options.RequestCultureProviders.Insert(0, new RouteDataRequestCultureProvider());
 });
@@ -181,4 +183,4 @@ if (db.Database.EnsureCreated())
     db.SaveChanges();
 }
 
-app.Run();
+app.Run(); 

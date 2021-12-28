@@ -1,2 +1,4 @@
 ﻿msgid "RequiredAttribute"
 msgstr "The {0} field is required"
+msgid "UserName"
+msgstr "User Name"

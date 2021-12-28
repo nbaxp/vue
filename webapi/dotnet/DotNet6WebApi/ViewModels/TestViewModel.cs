@@ -15,7 +15,7 @@ public class TestViewModel
     [DataType("custom")]//已扩展到format
     [Required]
     [Remote("Valid", "Home")]//未解析，待解决
-    [Display(Name = "用户名")]
+    [Display(Description = "UserName")]
     public string UserName { get; set; }
 
     [Required]
@@ -110,7 +110,7 @@ public class TestViewModel
 
 public enum TestEnum
 {
-    [Display(Name = "枚举1")]
+    [Display(Description = "TestEnum.Option1")]
     Option1,
 
     [Display(Name = "枚举2")]

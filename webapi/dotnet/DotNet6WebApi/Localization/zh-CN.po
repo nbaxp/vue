@@ -1,2 +1,4 @@
 ﻿msgid "RequiredAttribute"
 msgstr "必须输入 {0}"
+msgid "UserName"
+msgstr "用户名"

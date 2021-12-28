@@ -10,7 +10,10 @@ public class LocalizedValidationAttributeAdapterProvider : IValidationAttributeA
 
     public IAttributeAdapter GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer stringLocalizer)
     {
-        attribute.ErrorMessage = attribute.GetType().Name;
+        if(string.IsNullOrEmpty(attribute.ErrorMessage))
+        {
+            attribute.ErrorMessage = attribute.GetType().Name;
+        }
         return _originalProvider.GetAttributeAdapter(attribute, stringLocalizer);
     }
 }
