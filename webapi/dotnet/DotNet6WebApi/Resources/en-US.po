@@ -2,3 +2,5 @@
 msgstr "The {0} field is required"
 msgid "UserName"
 msgstr "User Name"
+msgid "Option1"
+msgstr "Option One"

@@ -2,3 +2,5 @@
 msgstr "必须输入 {0}"
 msgid "UserName"
 msgstr "用户名"
+msgid "Option1"
+msgstr "选项一"

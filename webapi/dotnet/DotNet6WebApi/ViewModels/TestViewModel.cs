@@ -110,7 +110,7 @@ public class TestViewModel
 
 public enum TestEnum
 {
-    [Display]
+    [Display(Name = "Option1")]
     Option1,
 
     [Display(Name = "枚举2")]
