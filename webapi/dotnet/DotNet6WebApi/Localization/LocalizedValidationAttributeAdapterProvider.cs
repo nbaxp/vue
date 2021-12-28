@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.Extensions.Localization;
 
-namespace DotNet6WebApi.Resources;
+namespace DotNet6WebApi.Localization;
 
 public class LocalizedValidationAttributeAdapterProvider : IValidationAttributeAdapterProvider
 {
@@ -10,7 +10,7 @@ public class LocalizedValidationAttributeAdapterProvider : IValidationAttributeA
 
     public IAttributeAdapter GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer stringLocalizer)
     {
-        if(string.IsNullOrEmpty(attribute.ErrorMessage))
+        if (string.IsNullOrEmpty(attribute.ErrorMessage))
         {
             attribute.ErrorMessage = attribute.GetType().Name;
             System.Diagnostics.Debug.WriteLine(attribute.ErrorMessage);

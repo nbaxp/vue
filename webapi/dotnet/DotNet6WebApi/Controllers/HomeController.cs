@@ -77,7 +77,7 @@ namespace DotNet6WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Valid(string userName)
         {
-            await Task.Delay(10 * 1000);
+            await Task.Delay(1 * 1000);
             return Ok(userName == "admin");
         }
 

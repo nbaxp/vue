@@ -6,6 +6,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 using DotNet6WebApi;
+using DotNet6WebApi.Localization;
 using DotNet6WebApi.Resources;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
@@ -94,8 +95,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerPostConfigureOptions>());
 builder.Services.AddSingleton(new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature));
 builder.Services.AddSingleton<IValidationAttributeAdapterProvider, LocalizedValidationAttributeAdapterProvider>();
-//builder.Services.AddLocalization();
-builder.Services.AddPortableObjectLocalization(o=>o.ResourcesPath = "Localization");
+builder.Services.AddLocalization();
+//builder.Services.AddPortableObjectLocalization(o=>o.ResourcesPath = "Resources");
 builder.Services.AddMvc(o=>o.ModelMetadataDetailsProviders.Insert(0,new CustomIDisplayMetadataProvider()))
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
     .AddDataAnnotationsLocalization(options =>
@@ -185,15 +186,3 @@ if (db.Database.EnsureCreated())
 }
 
 app.Run();
-
-public class CustomIDisplayMetadataProvider : IDisplayMetadataProvider
-{
-    public void CreateDisplayMetadata(DisplayMetadataProviderContext context){
-        var attributes = context.Attributes;
-        var displayAttribute = attributes.OfType<DisplayAttribute>().FirstOrDefault();
-        if(displayAttribute!=null&&string.IsNullOrEmpty(displayAttribute.Name))
-        {
-            displayAttribute.Name = context.Key.Name;
-        }
-    }
-}
