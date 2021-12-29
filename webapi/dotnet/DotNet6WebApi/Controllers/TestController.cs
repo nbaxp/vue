@@ -14,7 +14,7 @@ using NJsonSchema.Generation;
 namespace DotNet6WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("{culture}/[controller]/[action]")]
     public class TestController : ControllerBase
     {
         [HttpGet]

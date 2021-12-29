@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -95,8 +96,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerPostConfigureOptions>());
 builder.Services.AddSingleton(new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature));
 builder.Services.AddSingleton<IValidationAttributeAdapterProvider, LocalizedValidationAttributeAdapterProvider>();
-//builder.Services.AddLocalization();
-builder.Services.AddPortableObjectLocalization(o=>o.ResourcesPath = "Resources");
+builder.Services.AddLocalization();
+//builder.Services.AddPortableObjectLocalization(o=>o.ResourcesPath = "Resources");
 builder.Services.AddMvc(o=>o.ModelMetadataDetailsProviders.Insert(0,new CustomIDisplayMetadataProvider()))
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
     .AddDataAnnotationsLocalization(options =>

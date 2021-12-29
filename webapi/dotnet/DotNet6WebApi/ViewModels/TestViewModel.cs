@@ -14,8 +14,8 @@ public class TestViewModel
     [UIHint("UserNameUI")]//已扩展到format
     [DataType("custom")]//已扩展到format
     [Required]
-    [Remote("Valid", "Home")]//未解析，待解决
-    [Display]
+    [Remote("Valid", "Home",ErrorMessage ="RemoteAttribute")]//未解析，待解决
+    [Display(Name ="UserName",Description ="UserName.Desc")]
     public string UserName { get; set; }
 
     [Required]

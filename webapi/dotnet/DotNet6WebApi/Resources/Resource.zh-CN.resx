@@ -120,8 +120,8 @@
   <data name="Option1" xml:space="preserve">
     <value>选项一</value>
   </data>
-  <data name="RemoteAttribute_RemoteValidationFailed" xml:space="preserve">
-    <value>远程验证失败</value>
+  <data name="RemoteAttribute" xml:space="preserve">
+    <value>{0} 验证失败</value>
   </data>
   <data name="RequiredAttribute" xml:space="preserve">
     <value>必须输入 {0}</value>
