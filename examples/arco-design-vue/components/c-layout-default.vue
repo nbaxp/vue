@@ -51,9 +51,8 @@ export default {
             items: [],
         });
         menu.onMenuItemClick = (o) => router.push(o);
-        const webapi = inject("webapi");
         const init = () => {
-            fetch(webapi.content("menu.json"))
+            fetch("api/mock/menu.json")
                 .then((o) => o.json())
                 .then((o) => (menu.items = o));
         };

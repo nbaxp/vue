@@ -44,15 +44,6 @@ export default {
         };
         theme.change(theme.current);
         provide("theme", theme);
-        //webapi
-        const webapi = reactive({
-            current: GetOrAddLocalStorageItem("webapi", "mock"),
-            items: ["mock", "dotnet", "java"],
-        });
-        webapi.content = (o) => {
-            return `api/${webapi.current}/${o}`;
-        };
-        provide("webapi", webapi);
         //site
         const site = reactive({
             title: "Html Title",

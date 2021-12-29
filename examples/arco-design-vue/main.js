@@ -15,9 +15,23 @@ window.inject = Vue.inject;
 window.useRouter = VueRouter.useRouter;
 window.useRoute = VueRouter.useRoute;
 window.createI18n = VueI18n.createI18n;
+
+///webapi
+const webapi = reactive({
+    current: localStorage.getItem("webapi") ?? "dotnet",
+    items: ["dotnet", "java"],
+});
+webapi.change = o => {
+    webapi.current = o;
+    localStorage.setItem("webapi", o);
+};
+webapi.content = (o) => {
+    return `${location.protocol}//${location.host}/api/${webapi.current}/${o}`
+};
+
 ///locale
 //加载服务端locales
-const locales = await (await fetch("/api/dotnet/api/site/locale")).json();
+const locales = await (await fetch(webapi.content("site/locale"))).json();
 //获取本地缓存的locale
 var currentLocale = localStorage.getItem("locale");
 if (!currentLocale) {//不存在缓存，设置当前locale为缓存
@@ -73,8 +87,11 @@ locale.change = o => {
     localStorage.setItem("locale", locale.current);
     locale.i18n.global.locale = locale.current;
 };
+///app
 const app = createApp({
     setup(props, context) {
+        //webapi
+        provide("webapi", webapi);
         //locale
         provide("locale", locale);
         //router
@@ -95,7 +112,7 @@ const app = createApp({
             });
         };
         token.refresh = async () => {
-            const url = `${location.protocol}//${location.host}/api/dotnet/refresh_token`;
+            const url = webapi.content('refresh_token');
             try {
                 const response = await fetch(url, {
                     method: "POST",
@@ -180,7 +197,6 @@ const router = new createRouter({
 });
 app.use(i18n);
 app.use(router);
-//Vue.use(createI18n);
 app.use(ArcoVue);
 app.use(ArcoVueIcon);
 
@@ -191,7 +207,7 @@ app.mount("#root");
 
 ///////////////////////////////////////////////////////////////
 const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/api/dotnet/hub")
+    .withUrl(webapi.content("hub"))
     .configureLogging(signalR.LogLevel.Information)
     .build();
 

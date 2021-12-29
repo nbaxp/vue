@@ -8,18 +8,24 @@
         </router-link>
     </a-space>
     <a-space>
-        <a-select :default-value="webapi.current" @change="changeBe">
-            <a-option v-for="item in webapi.items" :key="item">{{
-                item
-            }}</a-option>
-        </a-select>
+        <a-dropdown @select="webapi.change" trigger="hover">
+            <a-button type="text" class="c-dropdown-btn"
+                >{{ webapi.current }}&nbsp;<icon-down></icon-down
+            ></a-button>
+            <template #content>
+                <a-doption
+                    v-for="item in webapi.items"
+                    :value="item.name"
+                    :class="webapi.current === item ? 'current' : ''"
+                    >{{ item }}</a-doption
+                >
+            </template>
+        </a-dropdown>
         <a-dropdown @select="locale.change" trigger="hover">
             <a-button type="text" class="c-dropdown-btn"
-                >{{ locale.getNativeName(locale.current)
-                }}<c-icon
-                    :name="localeListVisible ? 'icon-up' : 'icon-down'"
-                ></c-icon
-            ></a-button>
+                >{{ locale.getNativeName(locale.current) }}&nbsp;<icon-down
+                ></icon-down>
+            </a-button>
             <template #content>
                 <a-doption
                     v-for="item in locale.items"
@@ -31,10 +37,8 @@
         </a-dropdown>
         <a-dropdown @select="theme.change" trigger="hover">
             <a-button type="text" class="c-dropdown-btn"
-                >{{ $t("message.theme." + theme.current)
-                }}<c-icon
-                    :name="localeListVisible ? 'icon-up' : 'icon-down'"
-                ></c-icon
+                >{{ $t("message.theme." + theme.current) }}&nbsp;<icon-down
+                ></icon-down
             ></a-button>
             <template #content>
                 <a-doption
@@ -45,14 +49,6 @@
                 >
             </template>
         </a-dropdown>
-        <a-button
-            shape="circle"
-            @click="theme.change(theme.current == 'light' ? 'dark' : 'light')"
-        >
-            <c-icon
-                :name="theme.current === 'dark' ? 'icon-moon' : 'icon-sun'"
-            ></c-icon>
-        </a-button>
         <a-dropdown v-if="user" trigger="hover">
             <a-button>
                 <c-icon :name="user.icon"></c-icon> {{ user.name }}
@@ -75,12 +71,10 @@ export default {
     setup() {
         const webapi = inject("webapi");
         const locale = inject("locale");
-        const localeListVisible = ref(false);
         const theme = inject("theme");
         return {
             webapi,
             locale,
-            localeListVisible,
             theme,
         };
     },

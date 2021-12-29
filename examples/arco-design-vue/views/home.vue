@@ -36,10 +36,9 @@
 <script>
 export default {
     setup() {
-        const webapi = inject("webapi");
         const arcoComponents = ref([]);
         const init = () => {
-            fetch(webapi.content("arco.json"))
+            fetch("api/mock/arco.json")
                 .then((o) => o.json())
                 .then((o) => (arcoComponents.value = o));
         };
