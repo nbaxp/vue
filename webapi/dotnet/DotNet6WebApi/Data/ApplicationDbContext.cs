@@ -16,9 +16,9 @@ public class ApplicationDbContext : DbContext
                 modelBuilder.Entity(entity.Name).HasKey("Id");
                 modelBuilder.Entity(entity.Name).Property("Id").ValueGeneratedNever();
             }
-            if (entity.GetProperties().Any(o => o.Name == "RowVersion"))
+            if (entity.GetProperties().Any(o => o.Name == "ConcurrencyStamp"))
             {
-                modelBuilder.Entity(entity.Name).Property("RowVersion").IsConcurrencyToken().ValueGeneratedNever();
+                modelBuilder.Entity(entity.Name).Property("ConcurrencyStamp").IsConcurrencyToken().ValueGeneratedNever();
             }
             //if (entity.GetProperties().Any(o => o.Name == "Created"))
             //{
@@ -47,5 +47,22 @@ public class ApplicationDbContext : DbContext
             //}
         }
         modelBuilder.Entity<User>();
+    }
+
+    public override int SaveChanges()
+    {
+        this.ChangeTracker.DetectChanges();
+        var entries = this.ChangeTracker.Entries().Where(o => o.State == EntityState.Added || o.State == EntityState.Modified).ToList();
+        foreach (var entry in entries)
+        {
+            var entity = entry.Entity;
+            var propertyInfo = entry.GetType().GetProperty("ConcurrencyStamp");
+            if (propertyInfo != null)
+            {
+                propertyInfo.SetValue(entry, Guid.NewGuid().ToString());
+            }
+            (entry.Entity as BaseEntity)!.ConcurrencyStamp = Guid.NewGuid().ToString();
+        }
+        return base.SaveChanges();
     }
 }

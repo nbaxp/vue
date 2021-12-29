@@ -34,7 +34,7 @@ namespace DotNet6WebApi.Controllers
 
         [ResponseCache(NoStore = true)]
         [HttpPost("/token")]
-        public IActionResult GetToken([FromForm]string username)
+        public IActionResult GetToken([FromForm] string username)
         {
             var claims = new Claim[] {
                 new Claim(_options.TokenValidationParameters.NameClaimType, username),
@@ -69,7 +69,7 @@ namespace DotNet6WebApi.Controllers
                 var claimsPrincipal = _jwtSecurityTokenHandler.ValidateToken(refresh_token, _tokenValidationParameters, out SecurityToken validatedToken);
                 return this.GetToken(claimsPrincipal?.Identity?.Name!);
             }
-            catch(SecurityTokenExpiredException ex)
+            catch (SecurityTokenExpiredException ex)
             {
                 return this.Unauthorized(ex);
             }
