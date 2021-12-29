@@ -1,7 +1,6 @@
 ﻿public abstract class BaseEntity
 {
-    public Guid Id { get; protected set; }
-    public string ConcurrencyStamp { get; set; } = null!;
+    public Guid Id { get; set; }
     public BaseEntity()
     {
         this.Id = Guid.NewGuid();

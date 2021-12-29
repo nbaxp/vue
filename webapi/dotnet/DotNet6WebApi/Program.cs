@@ -8,6 +8,7 @@ using System.Text.Unicode;
 using DotNet6WebApi;
 using DotNet6WebApi.Localization;
 using DotNet6WebApi.Resources;
+using DotNet6WebApi.Web;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Localization;
@@ -107,7 +108,8 @@ builder.Services.AddMvc(o=>o.ModelMetadataDetailsProviders.Insert(0,new CustomID
             var localizer = factory.Create(typeof(Resource));
             return localizer;
         };
-    });
+    })
+    .ConfigureApplicationPartManager(apm =>apm.FeatureProviders.Add(new GenericControllerFeatureProvider()));
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     var supportedCultures = new[] {
