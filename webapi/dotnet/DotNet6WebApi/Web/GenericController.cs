@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq.Dynamic.Core;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DotNet6WebApi.Web;
 
@@ -10,11 +12,29 @@ namespace DotNet6WebApi.Web;
 [Route("[controller]/[action]")]
 [Route("{culture}/[controller]/[action]")]
 [ApiController]
-public class GenericController<T> : Controller
+public class GenericController<T> : Controller where T : BaseEntity
 {
-    [HttpGet]
-    public IActionResult Index()
+    private readonly DbContext _dbContext;
+
+    public GenericController(DbContext dbContext)
     {
-        return Content($"Hello from a generic {typeof(T).Name} controller.");
+        this._dbContext = dbContext;
+    }
+
+    [HttpGet]
+    public IActionResult Index([FromQuery]PaginationViewModel<T> model)
+    {
+        var query = this._dbContext.Set<T>().AsNoTracking();
+        if(!string.IsNullOrWhiteSpace(model.Query))
+        {
+            query = query.Where(model.Query);
+        }
+        model.TotalCount = query.Count();
+        if (!string.IsNullOrWhiteSpace(model.OrderBy))
+        {
+            query = query.OrderBy(model.OrderBy);
+        }
+        model.Items = query.Skip(model.PageSize*(model.PageIndex-1)).Take(model.PageSize).ToList();
+        return Ok(model);
     }
 }
