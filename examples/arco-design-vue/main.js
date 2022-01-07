@@ -18,17 +18,20 @@ window.createI18n = VueI18n.createI18n;
 
 ///webapi
 const webapi = reactive({
-    current: localStorage.getItem("webapi") ?? "dotnet",
+    current: "dotnet",
     items: ["dotnet", "java"],
+    change(o) {
+        webapi.current = o;
+        localStorage.setItem("webapi", o);
+    },
+    content(o) {
+        return `${location.protocol}//${location.host}/api/${webapi.current}/${o}`;
+    }
 });
-webapi.change = o => {
-    webapi.current = o;
-    localStorage.setItem("webapi", o);
-};
-webapi.content = (o) => {
-    return `${location.protocol}//${location.host}/api/${webapi.current}/${o}`
-};
-
+const cacheWebApi = localStorage.getItem("webapi");
+if (cacheWebApi && webapi.current !== cacheWebApi && webapi.items.find(o => o === cacheWebApi)) {
+    webapi.current = cacheWebApi;
+}
 ///locale
 //加载服务端locales
 const locales = await (await fetch(webapi.content("site/locale"))).json();
