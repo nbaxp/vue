@@ -6,7 +6,7 @@
 <script>
 export default {
     setup() {
-        console.log(inject("site"));
+        console.log(`layout: ${inject("site").layout} init`);
     },
 };
 </script>

@@ -13,10 +13,16 @@
             <router-view />
         </layout>
     </div>
-    <script src="./js/vue.global.min.js"></script>
-    <script src="./js/vue-router.global.min.js"></script>
-    <script src="./js/vue-browser-sfc.min.js"></script>
-    <script src="./js/main.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "vue": "./js/vue-esm-browser.js",
+                "vue-router": "./js/vue-router.esm-browser.js",
+                "vue-browser-sfc":"./js/vue-browser-sfc.esm.js"
+            }
+        }
+    </script>
+    <script type="module" src="./main.js"></script>
 </body>
 
 </html>
