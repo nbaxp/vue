@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Layout Demo</title>
+</head>
+
+<body>
+    <div id="root">
+        <page>
+            <router-view />
+        </page>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.26/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@4.0.12/dist/vue-router.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-browser-sfc@0.2.1/dist/vue-browser-sfc.js"></script>
+    <script>
+        window.onMounted = Vue.onMounted;
+        window.onUnmounted = Vue.onUnmounted;
+        window.ref = Vue.ref;
+        window.reactive = Vue.reactive;
+        window.watch = Vue.watch;
+        window.provide = Vue.provide;
+        window.inject = Vue.inject;
+        window.useRouter = VueRouter.useRouter;
+        window.useRoute = VueRouter.useRoute;
+        const createApp = Vue.createApp;
+        const defineAsyncComponent = Vue.defineAsyncComponent;
+        const createRouter = VueRouter.createRouter;
+        const createWebHistory = VueRouter.createWebHistory;
+        const app = createApp({
+            setup() {
+                return {};
+            }
+        });
+        const router = new createRouter({
+            history: createWebHistory(
+                document.querySelector("base")?.getAttribute("href")
+            ),
+            routes: [
+                // {
+                //     path: "/:catchAll(.*)",
+                //     redirect: "/404.html"
+                // }
+            ],
+        });
+        app.use(router);
+        VueBrowserSfc.config.debug = true;
+        VueBrowserSfc.config.componentExt = ".vue";
+        app.use(VueBrowserSfc, defineAsyncComponent);
+        app.mount("#root");
+    </script>
+</body>
+
+</html>
