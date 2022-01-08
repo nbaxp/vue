@@ -1,12 +1,5 @@
 <template>
-    <layout>
+    <page>
         <h1>Home</h1>
-    </layout>
+    </page>
 </template>
-<script>
-export default {
-    setup() {
-        console.log(inject("site"));
-    },
-};
-</script>

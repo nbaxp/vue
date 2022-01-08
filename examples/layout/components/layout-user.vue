@@ -1,6 +1,5 @@
 <template>
-    <router-link to="/">Home</router-link>
-    <router-link to="/login">Login</router-link>
+    <layout-header></layout-header>
     <h1>Layout User</h1>
     <slot> </slot>
 </template>

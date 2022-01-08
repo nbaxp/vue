@@ -1,13 +1,20 @@
 <template>
-    <slot></slot>
+    <component :is="site.layout">
+        <slot></slot>
+    </component>
 </template>
 <script>
 export default {
-    props: ["layout"],
-    setup(props) {
-        console.log(props.layout);
-        const site = inject("site");
-        site.layout = props.layout ?? site.defaultLayout;
+    setup() {
+        const defaultLayout = "layout-default";
+        const site = reactive({
+            defaultLayout: defaultLayout,
+            layout: defaultLayout,
+        });
+        provide("site", site);
+        return {
+            site,
+        };
     },
 };
 </script>

@@ -1,12 +1,5 @@
 <template>
-    <layout layout="layout-user">
+    <page layout="layout-user">
         <h1>Login</h1>
-    </layout>
+    </page>
 </template>
-<script>
-export default {
-    setup() {
-        console.log(inject("site"));
-    },
-};
-</script>
